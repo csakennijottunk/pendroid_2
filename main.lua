@@ -17,7 +17,7 @@ function love.load()
     end
     main.setScreen(main.screens.game)
     main.dimensions.w,main.dimensions.h = love.graphics.getDimensions()
-    main.dimensions.aw,main.dimensions.ah = 360,480
+    main.dimensions.aw,main.dimensions.ah = 1080, 1920
     main.dimensions.drawScaleX,main.dimensions.drawScaleY = main.dimensions.w/main.dimensions.aw,main.dimensions.h/main.dimensions.ah
 end
 
