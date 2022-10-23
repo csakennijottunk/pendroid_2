@@ -1,13 +1,21 @@
+require("menu")
 require("game")
+require("credits")
 main = {
     dimensions = {},
     setScreen = nil,
     currentScreen = nil,
     previousScreen = nil,
     screens = {
-        game = {
-            table = gameTable,
+        menu = {
+            table = menuTable,
         },
+        game = {
+            table = gameTable
+        },
+        credits = {
+            table = creditsTable
+        }
     },
 }
 function love.load()
@@ -15,7 +23,7 @@ function love.load()
     for i,v in pairs(main.screens) do
         v.table.functions.setup()
     end
-    main.setScreen(main.screens.game)
+    main.setScreen(main.screens.menu)
     main.dimensions.w,main.dimensions.h = love.graphics.getDimensions()
     main.dimensions.aw,main.dimensions.ah = 1080, 1920
     main.dimensions.drawScaleX,main.dimensions.drawScaleY = main.dimensions.w/main.dimensions.aw,main.dimensions.h/main.dimensions.ah
