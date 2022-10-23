@@ -20,10 +20,10 @@ gameTable = {
             --#region Föld
             earth = {
                 x = 0,
-                y = main.dimensions.h*0.7,
+                y = main.dimensions.h*0.8,
                 rot = 0,
-                w = 0.3*main.dimensions.drawScaleX,
-                h = 0.3*main.dimensions.drawScaleX,
+                w = 0.1*main.dimensions.drawScaleX,
+                h = 0.1*main.dimensions.drawScaleX,
                 img = love.graphics.newImage("assets/earth.png"),
                 correctPos = false,
             }
