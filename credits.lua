@@ -12,7 +12,6 @@ creditsTable = {
 }
 
 function creditsTable.functions.update(dt)
-    print("asd")
 end
 
 function creditsTable.functions.draw()

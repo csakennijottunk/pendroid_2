@@ -1,13 +1,33 @@
 gameTable = {
+    timer = {
+        dValue = 5,
+        value = 5,
+    },
     functions = {
         setup = function ()
-            if (gameTable.elements ~= nil) then
-                print("Elemnentek feltöltve.")
-                for i=1,3 do
-                    local el = createElement(nil,0,i*100,0.4,0.4,nil)
-                    table.insert(gameTable.elements,el)
-                end
-            end
+            --<<ELEMENT TEMPLATE DATA>>--
+            --#region template_data
+            Element = {
+                id = "Actor1",
+                type = {
+                    AMMO = "AMMO",
+                    METEORITE = "METEORITE",
+                    ASTRONAUT = "ASTRONAUT",
+                },
+            }
+            --#endregion
+            --<<>>--
+            --#region Föld
+            earth = {
+                x = 0,
+                y = main.dimensions.h*0.7,
+                rot = 0,
+                w = 0.3*main.dimensions.drawScaleX,
+                h = 0.3*main.dimensions.drawScaleX,
+                img = love.graphics.newImage("assets/earth.png"),
+                correctPos = false,
+            }
+            --#endregion
         end,
         update = nil,
         draw = nil,
@@ -17,25 +37,89 @@ gameTable = {
 
     
 function gameTable.functions.update(dt)
-    print(dt)
-    for i, v in pairs(gameTable.elements) do
-        v.x = v.x + 2
+    gameTable.timer.value = gameTable.timer.value - dt
+    if (gameTable.timer.value < 0) then
+        print("Element létrehzova")
+        table.insert(gameTable.elements,gameTable.createElement(#gameTable.elements,Element.type.METEORITE))
+        gameTable.timer.value = gameTable.timer.dValue
+    end
+    for i,v in pairs(gameTable.elements) do
+        if (gameTable.checkCollision(v.dimensions.x,v.dimensions.y,v.dimensions.w*v.img:getPixelWidth(),v.dimensions.h*v.img:getPixelHeight(),earth.x,earth.y,earth.w * earth.img:getPixelWidth(),earth.h*earth.img:getPixelHeight())) then
+            local el = gameTable.getElementIndex(v.id)
+            table.remove(gameTable.elements,el)
+        end
+        v.functions.update(v,dt)    
     end
 end
 
 function gameTable.functions.draw()
+    --#region föld kirajzolása
+    gameTable.drawEarth()
+    --#endregion
     for i, v in pairs(gameTable.elements) do
-        love.graphics.draw(v.img,v.x,v.y,0,v.w*main.dimensions.drawScaleX,v.h*main.dimensions.drawScaleY)
+        v.functions.draw(v)
     end
 end
 
-function createElement(functions,x,y,w,h,img)
+function gameTable.createElement(id,type,img,functions,dimensions)
+    id = id or Element.id
+    type = type
+    if (type == Element.type.METEORITE) then
+        functions = functions or {
+            draw = function (self)
+                love.graphics.draw(self.img,self.dimensions.x,self.dimensions.y,self.dimensions.rot,self.dimensions.w,self.dimensions.h)
+            end,
+            update = function (self,dt)
+                self.dimensions.y = self.dimensions.y + 2
+            end
+        }
+        img = img or love.graphics.newImage("assets/badlogic.jpg")
+        dimensions = dimensions or {
+            x = math.random(0,main.dimensions.w-(0.5 * main.dimensions.drawScaleX)*img:getPixelWidth()),
+            y = math.random(-200,-600),
+            rot = 0,
+            w = 0.5 * main.dimensions.drawScaleX,
+            h = 0.5 * main.dimensions.drawScaleX,
+        }
+    end
     return {
-        functions = functions or {},
-        x = x or 0,
-        y = y or 0,
-        w = w or 1,
-        h = h or 1,
-        img = love.graphics.newImage("assets/badlogic.jpg")
+        id = id,
+        type = type,
+        functions = functions,
+        img = img,
+        dimensions = dimensions
     }
 end
+
+function gameTable.getElement(id)
+    for i,v in pairs(gameTable.elements) do
+        if (v.id == id) then
+            return v
+        end
+    end
+    return nil
+end
+
+function gameTable.getElementIndex(id)
+    for i,v in pairs(gameTable.elements) do
+        if (v.id == id) then
+            return i
+        end
+    end
+    return nil
+end
+
+function gameTable.drawEarth()
+    if (earth.correctPos == false) then
+        earth.x = (main.dimensions.w - earth.img:getPixelWidth()*earth.w)/2
+        earth.correctPos = true
+    end
+    love.graphics.draw(earth.img,earth.x,earth.y,earth.rot,earth.w,earth.h)
+end
+
+function gameTable.checkCollision(x1,y1,w1,h1, x2,y2,w2,h2)
+    return x1 < x2+w2 and
+           x2 < x1+w1 and
+           y1 < y2+h2 and
+           y2 < y1+h1
+  end
