@@ -5,7 +5,6 @@ gameTable = {
     },
     functions = {
         setup = function ()
-            --<<ELEMENT TEMPLATE DATA>>--
             --#region template_data
             Element = {
                 id = "Actor1",
@@ -16,7 +15,6 @@ gameTable = {
                 },
             }
             --#endregion
-            --<<>>--
             --#region Föld
             earth = {
                 x = 0,
@@ -39,7 +37,6 @@ gameTable = {
 function gameTable.functions.update(dt)
     gameTable.timer.value = gameTable.timer.value - dt
     if (gameTable.timer.value < 0) then
-        print("Element létrehzova")
         table.insert(gameTable.elements,gameTable.createElement(#gameTable.elements,Element.type.METEORITE))
         gameTable.timer.value = gameTable.timer.dValue
     end
@@ -78,8 +75,8 @@ function gameTable.createElement(id,type,img,functions,dimensions)
             x = math.random(0,main.dimensions.w-(0.5 * main.dimensions.drawScaleX)*img:getPixelWidth()),
             y = math.random(-200,-600),
             rot = 0,
-            w = 0.5 * main.dimensions.drawScaleX,
-            h = 0.5 * main.dimensions.drawScaleX,
+            w = 0.3 * main.dimensions.drawScaleX,
+            h = 0.3 * main.dimensions.drawScaleX,
         }
     end
     return {
