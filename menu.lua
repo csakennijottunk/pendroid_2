@@ -34,7 +34,7 @@ menuTable = {
 
 function menuTable.functions.update(dt)
     for i,v in pairs(menuTable.buttons) do
-        if suit.Button(v.name,(main.dimensions.w/2 -(150  * main.dimensions.drawScaleX) / 2), (150 + v.plus) ,200  * main.dimensions.drawScaleX,150 * main.dimensions.drawScaleY).hit then
+        if suit.Button(v.name,(main.dimensions.w/2) - (100 * main.dimensions.drawScaleX), (150 + v.plus) ,200  * main.dimensions.drawScaleX,75 * main.dimensions.drawScaleX).hit then
             v.click()
         end
     end
