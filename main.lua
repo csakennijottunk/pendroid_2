@@ -18,6 +18,7 @@ function love.load()
     main.setScreen(main.screens.game)
     main.dimensions.w,main.dimensions.h = love.graphics.getDimensions()
     main.dimensions.aw,main.dimensions.ah = 360,480
+    main.dimensions.drawScaleX,main.dimensions.drawScaleY = main.dimensions.w/main.dimensions.aw,main.dimensions.h/main.dimensions.ah
 end
 
 function love.update(dt)
@@ -28,7 +29,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.scale(main.dimensions.w/main.dimensions.aw,main.dimensions.h/main.dimensions.ah)
+    --love.graphics.scale(main.dimensions.w/main.dimensions.aw,main.dimensions.h/main.dimensions.ah)
     if (main.currentScreen ~= nil and main.currentScreen.table.functions.draw~= nil) then
         main.currentScreen.table.functions.draw()
     end

@@ -25,8 +25,7 @@ end
 
 function gameTable.functions.draw()
     for i, v in pairs(gameTable.elements) do
-        print(i)
-        love.graphics.draw(v.img,v.x,v.y,0,v.w,v.h)
+        love.graphics.draw(v.img,v.x,v.y,0,v.w*main.dimensions.drawScaleX,v.h*main.dimensions.drawScaleY)
     end
 end
 
