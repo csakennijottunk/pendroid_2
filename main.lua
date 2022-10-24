@@ -35,15 +35,32 @@ end
 ---Minden képkockában lefutó funkció.
 ---@param dt number
 function love.update(dt)
+
     if (main.currentScreen ~= nil and main.currentScreen.table.functions.update~= nil) then
         main.currentScreen.table.functions.update(dt)
     end
 end
 ---Minden képkockában lefutó rajzoló funkció
 function love.draw()
-    --love.graphics.scale(main.dimensions.w/main.dimensions.aw,main.dimensions.h/main.dimensions.ah)
     if (main.currentScreen ~= nil and main.currentScreen.table.functions.draw~= nil) then
         main.currentScreen.table.functions.draw()
+    end
+end
+function love.touchpressed(id, x, y, dx, dy, pressure)
+    if (main.currentScreen.table.functions.touchpressed ~= nil) then
+        main.currentScreen.table.functions.touchpressed(id, x, y, dx, dy, pressure)
+    end
+end
+
+function love.touchreleased(id, x, y, dx, dy, pressure)
+    if (main.currentScreen.table.functions.touchreleased ~= nil) then
+        main.currentScreen.table.functions.touchreleased(id, x, y, dx, dy, pressure)
+    end
+end
+
+function love.touchmoved(id, x, y, dx, dy, pressure)
+    if (main.currentScreen.table.functions.touchmoved ~= nil) then
+        main.currentScreen.table.functions.touchmoved(id, x, y, dx, dy, pressure)
     end
 end
 ---Ez a funkció állítja be az aktív illetve előző képernyő értékét

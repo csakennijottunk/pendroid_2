@@ -5,6 +5,8 @@ gameTable = {
     },
     functions = {
         setup = function ()
+            require("Framework.andralog")
+            Analog = newAnalog(main.dimensions.w - main.dimensions.w/10,main.dimensions.h - main.dimensions.w/10,main.dimensions.w/12,(main.dimensions.w/12)/3,1)
             --#region template_data
             Element = {
                 id = "Actor1",
@@ -29,12 +31,16 @@ gameTable = {
         end,
         update = nil,
         draw = nil,
+        click = nil,
+        clickRelease = nil,
+        drawJoyStick = nil,
     },
     elements = {},
 }
 
     
 function gameTable.functions.update(dt)
+    Analog.update(dt)
     gameTable.timer.value = gameTable.timer.value - dt
     if (gameTable.timer.value < 0) then
         table.insert(gameTable.elements,gameTable.createElement(#gameTable.elements,Element.type.METEORITE))
@@ -53,9 +59,24 @@ function gameTable.functions.draw()
     --#region föld kirajzolása
     gameTable.drawEarth()
     --#endregion
+    --#region joystick
+    Analog.draw()
+    --#endregion
     for i, v in pairs(gameTable.elements) do
         v.functions.draw(v)
     end
+end
+
+function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
+    Analog.touchPressed(id, x, y, dx, dy, pressure)
+end
+
+function gameTable.functions.touchreleased(id, x, y, dx, dy, pressure)
+    Analog.touchReleased(id, x, y, dx, dy, pressure)
+end
+
+function gameTable.functions.touchmoved(id, x, y, dx, dy, pressure)
+    Analog.touchMoved(id, x, y, dx, dy, pressure)
 end
 
 function gameTable.createElement(id,type,img,functions,dimensions)
@@ -64,6 +85,7 @@ function gameTable.createElement(id,type,img,functions,dimensions)
     if (type == Element.type.METEORITE) then
         functions = functions or {
             draw = function (self)
+                love.graphics.setColor({1,1,1,1})
                 love.graphics.draw(self.img,self.dimensions.x,self.dimensions.y,self.dimensions.rot,self.dimensions.w,self.dimensions.h)
             end,
             update = function (self,dt)
