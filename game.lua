@@ -28,6 +28,24 @@ gameTable = {
                 correctPos = false,
             }
             --#endregion
+            tachanka = {
+                w = 0.1*main.dimensions.drawScaleX,
+                h = 0.1*main.dimensions.drawScaleX,
+                x = main.dimensions.w / 2 - 30,
+                y = main.dimensions.h - 150,
+                rot = 0,
+                img = love.graphics.newImage("assets/badlogic.jpg"),
+                correctPos = false,
+            }
+            crosshair = {
+                w = 0.1*main.dimensions.drawScaleX,
+                h = 0.1*main.dimensions.drawScaleX,
+                x = 30,
+                y = 50,
+                rot = 0,
+                img = love.graphics.newImage("assets/badlogic.jpg"),
+                correctPos = false,
+            }
         end,
         update = nil,
         draw = nil,
@@ -37,10 +55,9 @@ gameTable = {
     },
     elements = {},
 }
-
-    
 function gameTable.functions.update(dt)
     Analog.update(dt)
+    print(analogpos)
     gameTable.timer.value = gameTable.timer.value - dt
     if (gameTable.timer.value < 0) then
         table.insert(gameTable.elements,gameTable.createElement(#gameTable.elements,Element.type.METEORITE))
@@ -56,6 +73,8 @@ function gameTable.functions.update(dt)
 end
 
 function gameTable.functions.draw()
+    love.graphics.draw(tachanka.img,tachanka.x,tachanka.y,tachanka.rot,tachanka.w,tachanka.h)
+    --love.graphics.draw(crosshair.img,crosshair.x,crosshair.y,crosshair.rot,crosshair.w,crosshair.h)
     --#region föld kirajzolása
     gameTable.drawEarth()
     --#endregion
@@ -76,7 +95,7 @@ function gameTable.functions.touchreleased(id, x, y, dx, dy, pressure)
 end
 
 function gameTable.functions.touchmoved(id, x, y, dx, dy, pressure)
-    Analog.touchMoved(id, x, y, dx, dy, pressure)
+    analogpos = Analog.touchMoved(id, x, y, dx, dy, pressure)
 end
 
 function gameTable.createElement(id,type,img,functions,dimensions)
