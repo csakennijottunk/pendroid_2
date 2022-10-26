@@ -4,9 +4,10 @@ function createEarth(id,world)
     local functions = functions or {
         draw = function (self)
             love.graphics.setColor({1,1,1,1})
-            love.graphics.draw(self.img,self.dimensions.x,self.dimensions.y,self.dimensions.rot,self.dimensions.w,self.dimensions.h)
+            love.graphics.draw(self.img,self.dimensions.x,self.dimensions.y,self.dimensions.rot,self.dimensions.w,self.dimensions.h,self.img:getPixelWidth()/2,self.img:getPixelHeight()/2)
         end,
         update = function (self,dt)
+            self.dimensions.x,self.dimensions.y = self.collider:getPosition()
         end
     }
     local img = img or love.graphics.newImage("assets/earth.png")
@@ -18,7 +19,7 @@ function createEarth(id,world)
         h = 0.1*main.dimensions.drawScaleX,
     }
     dimensions.x = (main.dimensions.w - img:getPixelWidth()*dimensions.w)/2
-    local collider = world:newRectangleCollider(dimensions.x, dimensions. y, dimensions.w * img:getPixelWidth(), dimensions.h * img:getPixelHeight())
+    local collider = world:newCircleCollider(dimensions.x + dimensions.w * img:getPixelWidth()/2, dimensions.y + dimensions.w * img:getPixelWidth()/2, dimensions.w * img:getPixelWidth()/2)
     collider:setType("static")
 
     return {
@@ -26,7 +27,8 @@ function createEarth(id,world)
         type = type,
         functions = functions,
         img = img,
-        dimensions = dimensions
+        dimensions = dimensions,
+        collider = collider,
     }
        
 end

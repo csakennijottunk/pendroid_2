@@ -67,7 +67,7 @@ function gameTable.functions.update(dt)
     Analog.update(dt)
     gameTable.timer.value = gameTable.timer.value - dt
     if (gameTable.timer.value < 0) then
-        table.insert(gameTable.elements,createMeteorite(#gameTable.elements))
+        table.insert(gameTable.elements,createMeteorite(#gameTable.elements,gameTable.world))
         gameTable.timer.value = gameTable.timer.dValue
     end
     for i,v in pairs(gameTable.elements) do
@@ -88,6 +88,7 @@ function gameTable.functions.draw()
     --#endregion
     --#region joystick
     --#endregion
+    gameTable.world:draw()
     for i, v in pairs(gameTable.elements) do
         v.functions.draw(v)
     end
