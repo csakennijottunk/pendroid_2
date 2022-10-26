@@ -42,16 +42,7 @@ gameTable = {
             --#endregion
             --#region gun
             table.insert(gameTable.elements,createGun(#gameTable.elements))
-            --#endregion
-            crosshair = {
-                w = 0.1*main.dimensions.drawScaleX,
-                h = 0.1*main.dimensions.drawScaleX,
-                x = 30,
-                y = 50,
-                rot = 0,
-                img = love.graphics.newImage("assets/badlogic.jpg"),
-                correctPos = false,
-            }         
+            --#endregion        
             end
         end,
         update = nil,
@@ -65,6 +56,8 @@ gameTable = {
 function gameTable.functions.update(dt)
     gameTable.world:update(dt)
     Analog.update(dt)
+    analogx = Analog.getX()
+    analogy = Analog.getY()
     gameTable.timer.value = gameTable.timer.value - dt
     if (gameTable.timer.value < 0) then
         table.insert(gameTable.elements,createMeteorite(#gameTable.elements,gameTable.world))
@@ -83,6 +76,7 @@ end
 
 function gameTable.functions.draw()
     --love.graphics.draw(crosshair.img,crosshair.x,crosshair.y,crosshair.rot,crosshair.w,crosshair.h)
+    love.graphics.line(main.dimensions.w / 2,main.dimensions.h - 145, 400,50)
     --#region föld kirajzolása
     --gameTable.drawEarth()
     --#endregion
@@ -106,7 +100,7 @@ function gameTable.functions.touchreleased(id, x, y, dx, dy, pressure)
 end
 
 function gameTable.functions.touchmoved(id, x, y, dx, dy, pressure)
-    analogpos = Analog.touchMoved(id, x, y, dx, dy, pressure)
+    Analog.touchMoved(id, x, y, dx, dy, pressure)
 end
 
 function gameTable.createElement(id,type,img,functions,dimensions)
