@@ -20,6 +20,7 @@ main = {
 }
 --- Ez a funkció inicalizálja a love-ot a progriba.
 function love.load()
+    wf = require("Framework.windfield")
     main.dimensions.w,main.dimensions.h = love.graphics.getDimensions() -- jelenleg futó képernyőméret
     main.dimensions.aw,main.dimensions.ah = 360,480 -- mi általunk előredefiniált viszonyítási képernyőméret
     main.dimensions.drawScaleX,main.dimensions.drawScaleY = main.dimensions.w/main.dimensions.aw,main.dimensions.h/main.dimensions.ah -- a kettőnek az aránya segít scalelni androidra és más képernyőkre is
@@ -67,6 +68,7 @@ end
 ---@param screen screen
 function main.setScreen(screen)
     if (main.currentScreen ~= screen) then
+            screen.table.functions.setup(screen.table)            
         main.currentScreen = screen
     end
 end

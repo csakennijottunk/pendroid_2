@@ -1,5 +1,5 @@
 function createStar(id)
-    local id = id or 0
+    local id = id or Element.id
     local type = Element.type.STAR
     local functions = functions or {
         draw = function (self)
@@ -24,8 +24,8 @@ function createStar(id)
         w = 0.1 * main.dimensions.drawScaleX,
         h = 0.1 * main.dimensions.drawScaleX,
     }
-    dimensions.w = dimensions.w * dimensions.r / 10
-    dimensions.h = dimensions.h * dimensions.r / 10
+    dimensions.w = dimensions.w * dimensions.r / 15
+    dimensions.h = dimensions.h * dimensions.r / 15
 
     return {
         id = id,
