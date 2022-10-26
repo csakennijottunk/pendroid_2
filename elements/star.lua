@@ -15,7 +15,7 @@ function createStar(id)
 
         end
     }
-    local img = img or love.graphics.newImage("assets/kantsal.png")
+    local img = img or love.graphics.newImage("assets/badlogic.jpg")
     local dimensions = dimensions or {
         r = math.random(1,6),
         x = math.random(0, main.dimensions.w),

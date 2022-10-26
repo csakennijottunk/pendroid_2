@@ -11,14 +11,15 @@ function createMeteorite(id,world)
             self.dimensions.rot = self.collider:getAngle()
         end
     }
-    local img = img or love.graphics.newImage("assets/badlogic.jpg")
+    local img = img or love.graphics.newImage("assets/kantsal.png")
     local dimensions = dimensions or {
-        x = main.dimensions.w/2,
+        x = 0,
         y = math.random(-200,-600),
         rot = 0,
         w = 0.3 * main.dimensions.drawScaleX,
         h = 0.3 * main.dimensions.drawScaleX,
     }
+    dimensions.x = math.random(0, main.dimensions.w - (dimensions.w*img:getPixelWidth()))
 
     local collider = world:newRectangleCollider(dimensions.x, dimensions. y, dimensions.w * img:getPixelWidth(), dimensions.h * img:getPixelHeight())
     collider:setType("dynamic")

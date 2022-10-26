@@ -2,8 +2,8 @@
 
 gameTable = {
     timer = {
-        dValue = 5,
-        value = 5,
+        dValue = 0.2,
+        value = 0.2,
     },
     functions = {
         setup = function (self)
@@ -32,6 +32,12 @@ gameTable = {
                 },                
             }
 
+            testDirection = {
+                img = love.graphics.newImage("assets/badlogic.jpg"),
+                w = 0.5,
+                h = 0.5,
+            }
+            
             --#endregion
             --#region Föld
             for i = 1, 100 do
@@ -43,7 +49,10 @@ gameTable = {
             --#region gun
             table.insert(gameTable.elements,createGun(#gameTable.elements))
             --#endregion        
+            testDirection.h = getElementByType(Element.type.EARTH).dimensions.y / testDirection.img:getPixelHeight()
+
             end
+            
         end,
         update = nil,
         draw = nil,
@@ -70,23 +79,29 @@ function gameTable.functions.update(dt)
             table.remove(gameTable.elements,el)
         end
         ]]--
-        v.functions.update(v,dt)    
+        v.functions.update(v,dt)
     end
 end
 
 function gameTable.functions.draw()
     --love.graphics.draw(crosshair.img,crosshair.x,crosshair.y,crosshair.rot,crosshair.w,crosshair.h)
-    love.graphics.line(main.dimensions.w / 2,main.dimensions.h - 145, 400,50)
     --#region föld kirajzolása
     --gameTable.drawEarth()
     --#endregion
     --#region joystick
     --#endregion
-    gameTable.world:draw()
+    --gameTable.world:draw()
     for i, v in pairs(gameTable.elements) do
         v.functions.draw(v)
     end
     Analog.draw()
+    --love.graphics.draw(testDirection.img,main.dimensions.w/2 - 65,0,0,testDirection.w,testDirection.h)
+
+    --@todo BEFEJEZNI A MINIGUN IRÁNYÁT MUTATO IMG_T
+
+    if (Analog.isHeld()) then
+        --local dx,dy = angle_between_points      
+    end
 
 end
 
@@ -146,3 +161,12 @@ function gameTable.checkCollision(x1,y1,w1,h1, x2,y2,w2,h2)
            y1 < y2+h2 and
            y2 < y1+h1
   end
+
+
+function angle_between_points(target, gun)
+    targetX,targetY = target.x,target.y
+    gunX,gunY = gun.x,gun.y
+    myradians = math.atan((gunY-targetY), (targetX-gunX))    
+    degree = math.deg(myradians)
+    return degree
+end
