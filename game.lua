@@ -1,3 +1,5 @@
+
+
 gameTable = {
     timer = {
         dValue = 5,
@@ -5,6 +7,7 @@ gameTable = {
     },
     functions = {
         setup = function ()
+            require("star")
             require("Framework.andralog")
             Analog = newAnalog(main.dimensions.w - main.dimensions.w/10,main.dimensions.h - main.dimensions.w/10,main.dimensions.w/12,(main.dimensions.w/12)/3,1)
             --#region template_data
@@ -14,19 +17,16 @@ gameTable = {
                     AMMO = "AMMO",
                     METEORITE = "METEORITE",
                     ASTRONAUT = "ASTRONAUT",
-                },
+                    STAR = "STAR",
+                },                
             }
             --#endregion
             --#region Föld
-            earth = {
-                x = 0,
-                y = main.dimensions.h*0.8,
-                rot = 0,
-                w = 0.1*main.dimensions.drawScaleX,
-                h = 0.1*main.dimensions.drawScaleX,
-                img = love.graphics.newImage("assets/earth.png"),
-                correctPos = false,
-            }
+            for i = 1, 100 do
+                --table.insert(gameTable.elements, gameTable.createElement(1, Element.type.STAR))                
+                table.insert(gameTable.elements, createStar(i)) 
+            end
+            table.insert(gameTable.elements, gameTable.createElement(1, Element.type.EARTH))                
             --#endregion
         end,
         update = nil,
@@ -47,17 +47,19 @@ function gameTable.functions.update(dt)
         gameTable.timer.value = gameTable.timer.dValue
     end
     for i,v in pairs(gameTable.elements) do
+        --[[
         if (gameTable.checkCollision(v.dimensions.x,v.dimensions.y,v.dimensions.w*v.img:getPixelWidth(),v.dimensions.h*v.img:getPixelHeight(),earth.x,earth.y,earth.w * earth.img:getPixelWidth(),earth.h*earth.img:getPixelHeight())) then
             local el = gameTable.getElementIndex(v.id)
             table.remove(gameTable.elements,el)
         end
+        ]]--
         v.functions.update(v,dt)    
     end
 end
 
 function gameTable.functions.draw()
     --#region föld kirajzolása
-    gameTable.drawEarth()
+    --gameTable.drawEarth()
     --#endregion
     --#region joystick
     Analog.draw()
@@ -101,6 +103,55 @@ function gameTable.createElement(id,type,img,functions,dimensions)
             h = 0.3 * main.dimensions.drawScaleX,
         }
     end
+    --[[
+    if (type == Element.type.STAR) then        
+        functions = functions or {
+            draw = function (self)
+                love.graphics.setColor({1,1,1,1})
+                love.graphics.draw(self.img,self.dimensions.x,self.dimensions.y,self.dimensions.rot,self.dimensions.w,self.dimensions.h)
+            end,
+            update = function (self,dt)
+                self.dimensions.x = self.dimensions.x + self.dimensions.r * dt * 10
+                if self.dimensions.x > main.dimensions.w then
+                    self.dimensions.x = -self.dimensions.w * self.img:getPixelWidth()
+                    self.dimensions.y = math.random(0, main.dimensions.h)
+                end
+
+            end
+        }
+        img = img or love.graphics.newImage("assets/badlogic.jpg")
+        dimensions = dimensions or {
+            r = math.random(1,6),
+            x = math.random(0, main.dimensions.w),
+            y = math.random(0, main.dimensions.h),
+            rot = 0,
+            w = 0.1 * main.dimensions.drawScaleX,
+            h = 0.1 * main.dimensions.drawScaleX,
+        }
+        dimensions.w = dimensions.w * dimensions.r / 10
+        dimensions.h = dimensions.h * dimensions.r / 10
+    end 
+    ]]   
+    if (type == Element.type.EARTH) then        
+        functions = functions or {
+            draw = function (self)
+                love.graphics.setColor({1,1,1,1})
+                love.graphics.draw(self.img,self.dimensions.x,self.dimensions.y,self.dimensions.rot,self.dimensions.w,self.dimensions.h)
+            end,
+            update = function (self,dt)
+            end
+        }        
+        img = img or love.graphics.newImage("assets/earth.png")
+        dimensions = dimensions or {
+            x = 0,
+            y = main.dimensions.h*0.8,
+            rot = 0,
+            w = 0.1*main.dimensions.drawScaleX,
+            h = 0.1*main.dimensions.drawScaleX,
+            correctPos = false,
+        }
+    end    
+
     return {
         id = id,
         type = type,
