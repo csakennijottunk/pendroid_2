@@ -6,9 +6,19 @@ gameTable = {
         value = 5,
     },
     functions = {
-        setup = function ()
-            require("star")
+        setup = function (self)
+            if (self) then
+                self.elements = {}
+                self.world = wf.newWorld(0,0,true)
+            --#region Element requires
+            require("elements.star")
+            require("elements.earth")
+            require("elements.meteorite")
+            require("elements.gun")
+            --#endregion
+            --#region analog requires
             require("Framework.andralog")
+            --#endregion
             Analog = newAnalog(main.dimensions.w - main.dimensions.w/10,main.dimensions.h - main.dimensions.w/10,main.dimensions.w/12,(main.dimensions.w/12)/3,1)
             --#region template_data
             Element = {
@@ -18,25 +28,21 @@ gameTable = {
                     METEORITE = "METEORITE",
                     ASTRONAUT = "ASTRONAUT",
                     STAR = "STAR",
+                    GUN = "GUN",
                 },                
             }
+
             --#endregion
             --#region Föld
             for i = 1, 100 do
                 --table.insert(gameTable.elements, gameTable.createElement(1, Element.type.STAR))                
-                table.insert(gameTable.elements, createStar(i)) 
+                table.insert(gameTable.elements, createStar(#gameTable.elements)) 
             end
-            table.insert(gameTable.elements, gameTable.createElement(1, Element.type.EARTH))                
+            table.insert(gameTable.elements, createEarth(#gameTable.elements,self.world))                
             --#endregion
-            tachanka = {
-                w = 0.1*main.dimensions.drawScaleX,
-                h = 0.1*main.dimensions.drawScaleX,
-                x = main.dimensions.w / 2 - 30,
-                y = main.dimensions.h - 150,
-                rot = 0,
-                img = love.graphics.newImage("assets/badlogic.jpg"),
-                correctPos = false,
-            }
+            --#region gun
+            table.insert(gameTable.elements,createGun(#gameTable.elements))
+            --#endregion
             crosshair = {
                 w = 0.1*main.dimensions.drawScaleX,
                 h = 0.1*main.dimensions.drawScaleX,
@@ -45,7 +51,8 @@ gameTable = {
                 rot = 0,
                 img = love.graphics.newImage("assets/badlogic.jpg"),
                 correctPos = false,
-            }
+            }         
+            end
         end,
         update = nil,
         draw = nil,
@@ -56,11 +63,11 @@ gameTable = {
     elements = {},
 }
 function gameTable.functions.update(dt)
+    gameTable.world:update(dt)
     Analog.update(dt)
-    print(analogpos)
     gameTable.timer.value = gameTable.timer.value - dt
     if (gameTable.timer.value < 0) then
-        table.insert(gameTable.elements,gameTable.createElement(#gameTable.elements,Element.type.METEORITE))
+        table.insert(gameTable.elements,createMeteorite(#gameTable.elements))
         gameTable.timer.value = gameTable.timer.dValue
     end
     for i,v in pairs(gameTable.elements) do
@@ -75,20 +82,21 @@ function gameTable.functions.update(dt)
 end
 
 function gameTable.functions.draw()
-    love.graphics.draw(tachanka.img,tachanka.x,tachanka.y,tachanka.rot,tachanka.w,tachanka.h)
     --love.graphics.draw(crosshair.img,crosshair.x,crosshair.y,crosshair.rot,crosshair.w,crosshair.h)
     --#region föld kirajzolása
     --gameTable.drawEarth()
     --#endregion
     --#region joystick
-    Analog.draw()
     --#endregion
     for i, v in pairs(gameTable.elements) do
         v.functions.draw(v)
     end
+    Analog.draw()
+
 end
 
 function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
+    Analog = newAnalog(x,y,main.dimensions.w/12,(main.dimensions.w/12)/3,1)
     Analog.touchPressed(id, x, y, dx, dy, pressure)
 end
 
@@ -101,76 +109,6 @@ function gameTable.functions.touchmoved(id, x, y, dx, dy, pressure)
 end
 
 function gameTable.createElement(id,type,img,functions,dimensions)
-    id = id or Element.id
-    type = type
-    if (type == Element.type.METEORITE) then
-        functions = functions or {
-            draw = function (self)
-                love.graphics.setColor({1,1,1,1})
-                love.graphics.draw(self.img,self.dimensions.x,self.dimensions.y,self.dimensions.rot,self.dimensions.w,self.dimensions.h)
-            end,
-            update = function (self,dt)
-                self.dimensions.y = self.dimensions.y + 2
-            end
-        }
-        img = img or love.graphics.newImage("assets/badlogic.jpg")
-        dimensions = dimensions or {
-            x = math.random(0,main.dimensions.w-(0.5 * main.dimensions.drawScaleX)*img:getPixelWidth()),
-            y = math.random(-200,-600),
-            rot = 0,
-            w = 0.3 * main.dimensions.drawScaleX,
-            h = 0.3 * main.dimensions.drawScaleX,
-        }
-    end
-    --[[
-    if (type == Element.type.STAR) then        
-        functions = functions or {
-            draw = function (self)
-                love.graphics.setColor({1,1,1,1})
-                love.graphics.draw(self.img,self.dimensions.x,self.dimensions.y,self.dimensions.rot,self.dimensions.w,self.dimensions.h)
-            end,
-            update = function (self,dt)
-                self.dimensions.x = self.dimensions.x + self.dimensions.r * dt * 10
-                if self.dimensions.x > main.dimensions.w then
-                    self.dimensions.x = -self.dimensions.w * self.img:getPixelWidth()
-                    self.dimensions.y = math.random(0, main.dimensions.h)
-                end
-
-            end
-        }
-        img = img or love.graphics.newImage("assets/badlogic.jpg")
-        dimensions = dimensions or {
-            r = math.random(1,6),
-            x = math.random(0, main.dimensions.w),
-            y = math.random(0, main.dimensions.h),
-            rot = 0,
-            w = 0.1 * main.dimensions.drawScaleX,
-            h = 0.1 * main.dimensions.drawScaleX,
-        }
-        dimensions.w = dimensions.w * dimensions.r / 10
-        dimensions.h = dimensions.h * dimensions.r / 10
-    end 
-    ]]   
-    if (type == Element.type.EARTH) then        
-        functions = functions or {
-            draw = function (self)
-                love.graphics.setColor({1,1,1,1})
-                love.graphics.draw(self.img,self.dimensions.x,self.dimensions.y,self.dimensions.rot,self.dimensions.w,self.dimensions.h)
-            end,
-            update = function (self,dt)
-            end
-        }        
-        img = img or love.graphics.newImage("assets/earth.png")
-        dimensions = dimensions or {
-            x = 0,
-            y = main.dimensions.h*0.8,
-            rot = 0,
-            w = 0.1*main.dimensions.drawScaleX,
-            h = 0.1*main.dimensions.drawScaleX,
-            correctPos = false,
-        }
-    end    
-
     return {
         id = id,
         type = type,
@@ -189,6 +127,15 @@ function gameTable.getElement(id)
     return nil
 end
 
+function getElementByType(type)
+    for i,v in pairs(gameTable.elements) do
+        if (v.type == type) then
+            return v
+        end
+    end
+    return nil
+end
+
 function gameTable.getElementIndex(id)
     for i,v in pairs(gameTable.elements) do
         if (v.id == id) then
@@ -196,14 +143,6 @@ function gameTable.getElementIndex(id)
         end
     end
     return nil
-end
-
-function gameTable.drawEarth()
-    if (earth.correctPos == false) then
-        earth.x = (main.dimensions.w - earth.img:getPixelWidth()*earth.w)/2
-        earth.correctPos = true
-    end
-    love.graphics.draw(earth.img,earth.x,earth.y,earth.rot,earth.w,earth.h)
 end
 
 function gameTable.checkCollision(x1,y1,w1,h1, x2,y2,w2,h2)
