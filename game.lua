@@ -100,19 +100,7 @@ function gameTable.functions.draw()
     --@todo BEFEJEZNI A MINIGUN IRÁNYÁT MUTATO IMG_T
 
     if (Analog.isHeld()) then
-
-        local AnalogPoint = {
-            x = Analog.getX()*100,
-            y = -(Analog.getY()*100),
-        }
-        local TurretPoint = {
-            x = 0,
-            y = 0,
-        }
         local rot = -(math.rad(30) + Analog.getAngle(Analog.dx,Analog.dy,Analog.getX()*100,Analog.getY()*100))
-        love.graphics.print("FORGATÁS:" .. rot)
-        love.graphics.print("analog_x in table : " .. AnalogPoint.x,0,50)
-        love.graphics.print("analog_y in table :" .. AnalogPoint.y,0,100)
         love.graphics.draw(testDirection.img,main.dimensions.w/2 - 65 + testDirection.img:getPixelWidth()/4,testDirection.img:getPixelHeight() * testDirection.h,90+rot,testDirection.w,testDirection.h,testDirection.img:getPixelWidth()/2,testDirection.img:getPixelHeight())
       
     else
