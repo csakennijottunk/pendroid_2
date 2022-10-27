@@ -19,7 +19,11 @@ gameTable = {
             --#region analog requires
             require("Framework.andralog")
             --#endregion
-            Analog = newAnalog(main.dimensions.w - main.dimensions.w/10,main.dimensions.h - main.dimensions.w/10,main.dimensions.w/12,(main.dimensions.w/12)/3,1)
+            Analog = newAnalog(main.dimensions.w - main.dimensions.w/4,main.dimensions.h - main.dimensions.w/4)
+            analogDimensions = {
+                x = main.dimensions.w - main.dimensions.w/10,
+                y = main.dimensions.h - main.dimensions.w/10,
+            }
             --#region template_data
             Element = {
                 id = "Actor1",
@@ -65,8 +69,6 @@ gameTable = {
 function gameTable.functions.update(dt)
     gameTable.world:update(dt)
     Analog.update(dt)
-    analogx = Analog.getX()
-    analogy = Analog.getY()
     gameTable.timer.value = gameTable.timer.value - dt
     if (gameTable.timer.value < 0) then
         table.insert(gameTable.elements,createMeteorite(#gameTable.elements,gameTable.world))
@@ -95,18 +97,34 @@ function gameTable.functions.draw()
         v.functions.draw(v)
     end
     Analog.draw()
-    --love.graphics.draw(testDirection.img,main.dimensions.w/2 - 65,0,0,testDirection.w,testDirection.h)
-
     --@todo BEFEJEZNI A MINIGUN IRÁNYÁT MUTATO IMG_T
 
     if (Analog.isHeld()) then
-        --local dx,dy = angle_between_points      
+
+        local AnalogPoint = {
+            x = Analog.getX()*100,
+            y = -(Analog.getY()*100),
+        }
+        local TurretPoint = {
+            x = 0,
+            y = 0,
+        }
+        local rot = -(math.rad(30) + Analog.getAngle(Analog.dx,Analog.dy,Analog.getX()*100,Analog.getY()*100))
+        love.graphics.print("FORGATÁS:" .. rot)
+        love.graphics.print("analog_x in table : " .. AnalogPoint.x,0,50)
+        love.graphics.print("analog_y in table :" .. AnalogPoint.y,0,100)
+        love.graphics.draw(testDirection.img,main.dimensions.w/2 - 65 + testDirection.img:getPixelWidth()/4,testDirection.img:getPixelHeight() * testDirection.h,90+rot,testDirection.w,testDirection.h,testDirection.img:getPixelWidth()/2,testDirection.img:getPixelHeight())
+      
+    else
+        love.graphics.print("Nincs analog mozgás")
+        love.graphics.print("analog_x : " .. Analog.getX(),0,50)
+        love.graphics.print("analog_y :" .. Analog.getY(),0,100)
     end
 
 end
 
 function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
-    Analog = newAnalog(x,y,main.dimensions.w/12,(main.dimensions.w/12)/3,1)
+    --Analog = newAnalog(x,y,main.dimensions.w/12,(main.dimensions.w/12)/3,1)
     Analog.touchPressed(id, x, y, dx, dy, pressure)
 end
 
@@ -163,10 +181,10 @@ function gameTable.checkCollision(x1,y1,w1,h1, x2,y2,w2,h2)
   end
 
 
-function angle_between_points(target, gun)
-    targetX,targetY = target.x,target.y
-    gunX,gunY = gun.x,gun.y
-    myradians = math.atan((gunY-targetY), (targetX-gunX))    
-    degree = math.deg(myradians)
-    return degree
+function angle_between_points(analog,turret)
+    targetX,targetY = analog.x,analog.y
+    gunX,gunY = turret.x,turret.y
+    myradians = math.atan((gunY-targetY), (targetX-gunX))
+    degrees = math.deg(myradians)
+    return degrees
 end

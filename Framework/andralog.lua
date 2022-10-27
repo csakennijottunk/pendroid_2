@@ -171,6 +171,8 @@ function newAnalog(Ax, Ay, Ar, Br, Bd)
 					if not (self.limitedRange and d > self.size) then
 						self.dx = math.cos(self.angle) * (self.d-self.deadzone)/(1-self.deadzone)
 						self.dy = -math.sin(self.angle) * (self.d-self.deadzone)/(1-self.deadzone)
+					else
+						self.dx,self.dy = 1,1
 					end
 					
 					if self.rangeRelease and d > self.size then
