@@ -10,7 +10,7 @@ function createEarth(id,world)
             self.dimensions.x,self.dimensions.y = self.collider:getPosition()
         end
     }
-    local img = img or love.graphics.newImage("assets/earth.png")
+    local img = img or main.images.earth
     local dimensions = dimensions or {
         x = 0,
         y = main.dimensions.h*0.8,

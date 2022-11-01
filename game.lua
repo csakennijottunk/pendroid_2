@@ -15,11 +15,13 @@ gameTable = {
             require("elements.earth")
             require("elements.meteorite")
             require("elements.gun")
+            require("elements.ammo")
+            require("elements.ammo_indicator")
             --#endregion
             --#region analog requires
             require("Framework.andralog")
             --#endregion
-            Analog = newAnalog(main.dimensions.w - main.dimensions.w/4,main.dimensions.h - main.dimensions.w/4)
+            Analog = newAnalog(main.dimensions.w - main.dimensions.w/5,main.dimensions.h - main.dimensions.w/8,70,21)
             analogDimensions = {
                 x = main.dimensions.w - main.dimensions.w/10,
                 y = main.dimensions.h - main.dimensions.w/10,
@@ -33,14 +35,10 @@ gameTable = {
                     ASTRONAUT = "ASTRONAUT",
                     STAR = "STAR",
                     GUN = "GUN",
+                    AMMO_INDICATOR = "AMMO_INDICATOR"
                 },                
             }
 
-            testDirection = {
-                img = love.graphics.newImage("assets/badlogic.jpg"),
-                w = 0.5,
-                h = 0.5,
-            }
             
             --#endregion
             --#region Föld
@@ -52,8 +50,27 @@ gameTable = {
             --#endregion
             --#region gun
             table.insert(gameTable.elements,createGun(#gameTable.elements))
-            --#endregion        
-            testDirection.h = getElementByType(Element.type.EARTH).dimensions.y / testDirection.img:getPixelHeight()
+            --#endregion
+            --#region
+            table.insert(gameTable.elements,createAmmoIndicator(#gameTable.elements))  
+
+            self.buttons = {
+                shootButton = {
+                    x = 25 * main.dimensions.drawScaleX,
+                    y = main.dimensions.h, 
+                    w = main.dimensions.w/7,
+                    h = (main.dimensions.w/5)/3,
+                    name = "SHOOT",
+                    click = function ()
+                        if (Analog.getX() ~= 0 or Analog.getY() ~= 0) then
+                            table.insert(self.elements,createAmmo(#self.elements,self.world,Analog))
+                            
+                        end
+                    end,
+                }
+            }
+            self.buttons.shootButton.y = self.buttons.shootButton.y - self.buttons.shootButton.h - (main.dimensions.drawScaleX*25)
+
 
             end
             
@@ -81,7 +98,8 @@ function gameTable.functions.update(dt)
             table.remove(gameTable.elements,el)
         end
         ]]--
-        v.functions.update(v,dt)
+        local rot = -(math.rad(25) + Analog.getAngle(Analog.dx,Analog.dy,Analog.getX()*100,Analog.getY()*100))     
+        v.functions.update(v,dt,rot)
     end
 end
 
@@ -93,26 +111,18 @@ function gameTable.functions.draw()
     --#region joystick
     --#endregion
     --gameTable.world:draw()
+    
     for i, v in pairs(gameTable.elements) do
         v.functions.draw(v)
     end
     Analog.draw()
     --@todo BEFEJEZNI A MINIGUN IRÁNYÁT MUTATO IMG_T
-
-    if (Analog.isHeld()) then
-        local rot = -(math.rad(30) + Analog.getAngle(Analog.dx,Analog.dy,Analog.getX()*100,Analog.getY()*100))
-        love.graphics.draw(testDirection.img,main.dimensions.w/2 - 65 + testDirection.img:getPixelWidth()/4,testDirection.img:getPixelHeight() * testDirection.h,90+rot,testDirection.w,testDirection.h,testDirection.img:getPixelWidth()/2,testDirection.img:getPixelHeight())
-      
-    else
-        love.graphics.print("Nincs analog mozgás")
-        love.graphics.print("analog_x : " .. Analog.getX(),0,50)
-        love.graphics.print("analog_y :" .. Analog.getY(),0,100)
-    end
-
 end
 
 function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
-    --Analog = newAnalog(x,y,main.dimensions.w/12,(main.dimensions.w/12)/3,1)
+    if (not Analog.isHeld()) then
+        Analog = newAnalog(x,y,70,21)        
+    end
     Analog.touchPressed(id, x, y, dx, dy, pressure)
 end
 

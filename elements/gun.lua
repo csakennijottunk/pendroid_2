@@ -9,7 +9,7 @@ function createGun(id)
         update = function (self,dt)
         end
     }
-    local img = img or love.graphics.newImage("assets/badlogic.jpg")
+    local img = img or main.images.badlogic
     local dimensions = dimensions or {
         x = 0 ,
         y = main.dimensions.h*0.8,

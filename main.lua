@@ -17,6 +17,14 @@ main = {
             table = creditsTable
         }
     },
+    images = {
+        badlogic = love.graphics.newImage("assets/badlogic.jpg"),
+        earth = love.graphics.newImage("assets/earth.png"),
+        kantsal = love.graphics.newImage("assets/kantsal.png"),
+    },
+    fonts = {
+        main_font = ""
+    }
 }
 --- Ez a funkció inicalizálja a love-ot a progriba.
 function love.load()
