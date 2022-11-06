@@ -1,14 +1,26 @@
 function createMeteorite(id,world)
+    local exists = true
     local id = id or Element.id
     local type = Element.type.METEORITE
     local functions = functions or {
         draw = function (self)
-            love.graphics.setColor({1,1,1,1})
-            love.graphics.draw(self.img,self.dimensions.x,self.dimensions.y,self.dimensions.rot,self.dimensions.w,self.dimensions.h,self.img:getPixelWidth()/2,self.img:getPixelHeight()/2)
+            if (self.exists) then
+                love.graphics.setColor({1,1,1,1})
+                love.graphics.draw(self.img,self.dimensions.x,self.dimensions.y,self.dimensions.rot,self.dimensions.w,self.dimensions.h,self.img:getPixelWidth()/2,self.img:getPixelHeight()/2)                
+            end
         end,
         update = function (self,dt)
-            self.dimensions.x,self.dimensions.y = self.collider:getX(),self.collider:getY()
-            self.dimensions.rot = self.collider:getAngle()
+            if (self.exists) then
+                self.dimensions.x,self.dimensions.y = self.collider:getX(),self.collider:getY()
+                self.dimensions.rot = self.collider:getAngle()
+                
+                if (self.dimensions.y > main.dimensions.h + 50) then
+                    self.exists = false
+                    self.collider:destroy()
+                end
+            end
+
+            
         end
     }
     local img = img or main.images.kantsal
@@ -33,6 +45,7 @@ function createMeteorite(id,world)
         img = img,
         dimensions = dimensions,
         collider = collider,
+        exists = exists,
     }
        
 end

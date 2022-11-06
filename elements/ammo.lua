@@ -11,7 +11,7 @@ function createAmmo(id,world,analog)
             self.dimensions.rot = self.collider:getAngle()
         end
     }
-    local img = img or main.images.kantsal
+    local img = img or main.images.badlogic
     local dimensions = dimensions or {
         x = 0 ,
         y = main.dimensions.h*0.8,

@@ -72,6 +72,13 @@ function love.touchmoved(id, x, y, dx, dy, pressure)
         main.currentScreen.table.functions.touchmoved(id, x, y, dx, dy, pressure)
     end
 end
+
+function love.mousepressed(x, y, button, istouch, presses )
+    if (main.currentScreen.table.functions.mousepressed ~= nil) then
+        main.currentScreen.table.functions.mousepressed(x, y, button, istouch, presses)
+    end
+end
+
 ---Ez a funkció állítja be az aktív illetve előző képernyő értékét
 ---@param screen screen
 function main.setScreen(screen)

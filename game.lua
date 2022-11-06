@@ -17,6 +17,7 @@ gameTable = {
             require("elements.gun")
             require("elements.ammo")
             require("elements.ammo_indicator")
+            require("elements.shootButton")
             --#endregion
             --#region analog requires
             require("Framework.andralog")
@@ -35,7 +36,8 @@ gameTable = {
                     ASTRONAUT = "ASTRONAUT",
                     STAR = "STAR",
                     GUN = "GUN",
-                    AMMO_INDICATOR = "AMMO_INDICATOR"
+                    AMMO_INDICATOR = "AMMO_INDICATOR",
+                    SHOOT_BUTTON = "SHOOT_BUTTON"
                 },                
             }
 
@@ -54,22 +56,7 @@ gameTable = {
             --#region
             table.insert(gameTable.elements,createAmmoIndicator(#gameTable.elements))  
 
-            self.buttons = {
-                shootButton = {
-                    x = 25 * main.dimensions.drawScaleX,
-                    y = main.dimensions.h, 
-                    w = main.dimensions.w/7,
-                    h = (main.dimensions.w/5)/3,
-                    name = "SHOOT",
-                    click = function ()
-                        if (Analog.getX() ~= 0 or Analog.getY() ~= 0) then
-                            table.insert(self.elements,createAmmo(#self.elements,self.world,Analog))
-                            
-                        end
-                    end,
-                }
-            }
-            self.buttons.shootButton.y = self.buttons.shootButton.y - self.buttons.shootButton.h - (main.dimensions.drawScaleX*25)
+            table.insert(gameTable.elements,createShootButton(#gameTable.elements))
 
 
             end
@@ -77,9 +64,7 @@ gameTable = {
         end,
         update = nil,
         draw = nil,
-        click = nil,
-        clickRelease = nil,
-        drawJoyStick = nil,
+        mousepressed = nil,
     },
     elements = {},
 }
@@ -92,36 +77,26 @@ function gameTable.functions.update(dt)
         gameTable.timer.value = gameTable.timer.dValue
     end
     for i,v in pairs(gameTable.elements) do
-        --[[
-        if (gameTable.checkCollision(v.dimensions.x,v.dimensions.y,v.dimensions.w*v.img:getPixelWidth(),v.dimensions.h*v.img:getPixelHeight(),earth.x,earth.y,earth.w * earth.img:getPixelWidth(),earth.h*earth.img:getPixelHeight())) then
-            local el = gameTable.getElementIndex(v.id)
-            table.remove(gameTable.elements,el)
-        end
-        ]]--
-        local rot = -(math.rad(25) + Analog.getAngle(Analog.dx,Analog.dy,Analog.getX()*100,Analog.getY()*100))     
+        local rot = -(math.rad(26) + Analog.getAngle(Analog.dx,Analog.dy,Analog.getX()*100,Analog.getY()*100))  
         v.functions.update(v,dt,rot)
     end
 end
 
 function gameTable.functions.draw()
-    --love.graphics.draw(crosshair.img,crosshair.x,crosshair.y,crosshair.rot,crosshair.w,crosshair.h)
-    --#region föld kirajzolása
-    --gameTable.drawEarth()
-    --#endregion
-    --#region joystick
-    --#endregion
-    --gameTable.world:draw()
     
     for i, v in pairs(gameTable.elements) do
         v.functions.draw(v)
     end
     Analog.draw()
-    --@todo BEFEJEZNI A MINIGUN IRÁNYÁT MUTATO IMG_T
 end
 
+
 function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
+    local shootButton = getElementByType(Element.type.SHOOT_BUTTON)
     if (not Analog.isHeld()) then
         Analog = newAnalog(x,y,70,21)        
+    elseif (isInBox(x,y,shootButton.dimensions.x,shootButton.dimensions.y,shootButton.dimensions.w * shootButton.img:getPixelWidth(),shootButton.dimensions.h* shootButton.img:getPixelHeight())) then
+        table.insert(gameTable.elements,createAmmo(#gameTable.elements,gameTable.world,Analog))
     end
     Analog.touchPressed(id, x, y, dx, dy, pressure)
 end
@@ -185,4 +160,12 @@ function angle_between_points(analog,turret)
     myradians = math.atan((gunY-targetY), (targetX-gunX))
     degrees = math.deg(myradians)
     return degrees
+end
+
+function isInBox(cx,cy,x,y,width,height)
+    if ( cx >= x and cx <= x + width ) and ( cy >= y and cy <= y + height ) then 
+        return true 
+    else 
+        return false 
+    end 
 end
