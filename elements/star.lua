@@ -15,7 +15,7 @@ function createStar(id)
 
         end
     }
-    local img = img or main.images.badlogic
+    local img = main.images.badlogic
     local dimensions = dimensions or {
         r = math.random(1,6),
         x = math.random(0, main.dimensions.w),

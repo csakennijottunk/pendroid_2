@@ -5,6 +5,7 @@ gameTable = {
         dValue = 0.2,
         value = 0.2,
     },
+    score = 0,
     functions = {
         setup = function (self)
             if (self) then
@@ -80,6 +81,7 @@ function gameTable.functions.update(dt)
         local rot = -(math.rad(26) + Analog.getAngle(Analog.dx,Analog.dy,Analog.getX()*100,Analog.getY()*100))  
         v.functions.update(v,dt,rot)
     end
+    print(gameTable.score)
 end
 
 function gameTable.functions.draw()
@@ -94,12 +96,13 @@ end
 function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
     local shootButton = getElementByType(Element.type.SHOOT_BUTTON)
     if (not Analog.isHeld()) then
-        Analog = newAnalog(x,y,70,21)        
+        Analog = newAnalog(x,y,70,21)   
     elseif (isInBox(x,y,shootButton.dimensions.x,shootButton.dimensions.y,shootButton.dimensions.w * shootButton.img:getPixelWidth(),shootButton.dimensions.h* shootButton.img:getPixelHeight())) then
         table.insert(gameTable.elements,createAmmo(#gameTable.elements,gameTable.world,Analog))
     end
     Analog.touchPressed(id, x, y, dx, dy, pressure)
 end
+
 
 function gameTable.functions.touchreleased(id, x, y, dx, dy, pressure)
     Analog.touchReleased(id, x, y, dx, dy, pressure)

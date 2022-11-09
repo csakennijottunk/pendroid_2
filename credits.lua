@@ -1,4 +1,4 @@
-font = love.graphics.newFont("assets/heavy_heap_rg.otf", 50)
+font = love.graphics.newFont("assets/heavy_heap_rg.otf", 40)
 creditsTable = {
     functions = {
         setup = function ()
@@ -7,14 +7,14 @@ creditsTable = {
             y = main.dimensions.h
             text = {
                 credits = {
-                    text = love.graphics.newText(font, "Credits"),
+                    text = love.graphics.newText(font, "Developers"),
                     x = x / 2,
-                    y = y / 2 - 300,
+                    y = y / 2 - 200,
                 },
                 milan = {
                     text = love.graphics.newText(font, "Fellner Milán"),
                     x = x / 2,
-                    y = y / 2 - 200,
+                    y = y / 2 - 150,
                 },
                 bence = {
                     text = love.graphics.newText(font, "Németh Csaba Bence"),
@@ -24,12 +24,12 @@ creditsTable = {
                 kancsal = {
                     text = love.graphics.newText(font, "Kancsal Máté"),
                     x = x / 2,
-                    y = y / 2,
+                    y = y / 2 - 50,
                 },
                 zsebok = {
                     text = love.graphics.newText(font, "Zsebők Dávid Ferenc"),
                     x = x / 2,
-                    y = y / 2 + 100,
+                    y = y / 2,
                 }
             }
             for i,v in pairs(text)do
@@ -41,7 +41,7 @@ creditsTable = {
     },
     buttons = {
         {
-        name = "Vissza",
+        name = "Back",
         click = function ()
             main.setScreen(main.screens.menu)
         end,

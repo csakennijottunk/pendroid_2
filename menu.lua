@@ -9,21 +9,21 @@ menuTable = {
     elements = {},
     buttons = {
         {
-            name = "Játék",
+            name = "Play",
             click = function ()
                 main.setScreen(main.screens.game)
             end,
             plus = 0,
         },
         {
-            name = "Kreditek",
+            name = "Developers",
             click = function ()
                 main.setScreen(main.screens.credits)
             end,
             plus = 100,
         },
         {
-            name = "Kilépés",
+            name = "Exit",
             click = function ()
                 love.event.quit()
             end,
