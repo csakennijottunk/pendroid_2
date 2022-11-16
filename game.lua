@@ -11,6 +11,7 @@ gameTable = {
             if (self) then
                 self.elements = {}
                 self.world = wf.newWorld(0,0,true)
+                self.world:setCallbacks(self.functions.beginContact, self.functions.endContact)
             --#region Element requires
             require("elements.star")
             require("elements.earth")
@@ -66,6 +67,9 @@ gameTable = {
         update = nil,
         draw = nil,
         mousepressed = nil,
+        beginContact = nil,
+        endContact = nil,
+        getElementByIndex = nil,
     },
     elements = {},
 }
@@ -81,7 +85,6 @@ function gameTable.functions.update(dt)
         local rot = -(math.rad(26) + Analog.getAngle(Analog.dx,Analog.dy,Analog.getX()*100,Analog.getY()*100))  
         v.functions.update(v,dt,rot)
     end
-    print(gameTable.score)
 end
 
 function gameTable.functions.draw()
@@ -148,6 +151,19 @@ function gameTable.getElementIndex(id)
     end
     return nil
 end
+function gameTable.getElementByIndex(element)
+    -- table.remove(gameTable.elements, self)
+    for key, value in pairs(gameTable.elements) do
+        if value == element then
+            return key
+        end
+    end
+end
+
+function gameTable.removeElement(element)
+    -- table.remove(gameTable.elements, self)
+    table.remove(gameTable.elements, gameTable.getElementByIndex(element))
+end
 
 function gameTable.checkCollision(x1,y1,w1,h1, x2,y2,w2,h2)
     return x1 < x2+w2 and
@@ -171,4 +187,18 @@ function isInBox(cx,cy,x,y,width,height)
     else 
         return false 
     end 
+end
+
+
+function gameTable.functions.beginContact(a,b,coll)
+    local o1 = a:getUserData()
+    local o2 = b:getUserData()
+    if (o1.type == Element.type.METEORITE and o2.type == Element.type.EARTH) then
+        a:getBody():destroy()
+        gameTable.removeElement(o1)
+    end 
+end
+
+function gameTable.functions.endContact(a,b,coll)
+    
 end

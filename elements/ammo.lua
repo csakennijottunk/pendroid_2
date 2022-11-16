@@ -24,9 +24,8 @@ function createAmmo(id,world,analog)
     local collider = world:newRectangleCollider(dimensions.x, dimensions. y, dimensions.w * img:getPixelWidth(), dimensions.h * img:getPixelHeight())
     collider:setType("dynamic")
     collider:applyForce(analog.getX()*200000,analog.getY()*200000)
-    
 
-    return {
+    local result = {
         id = id,
         type = type,
         functions = functions,
@@ -34,5 +33,9 @@ function createAmmo(id,world,analog)
         dimensions = dimensions,
         collider = collider,
     }
+    collider:setUserData(result)
+    
+
+    return result
        
 end

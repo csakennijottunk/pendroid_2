@@ -17,6 +17,7 @@ function createMeteorite(id,world)
                 if (self.dimensions.y > main.dimensions.h + 50) then
                     self.exists = false
                     self.collider:destroy()
+                    gameTable.removeElement(self)
                 end
             end
 
@@ -36,9 +37,8 @@ function createMeteorite(id,world)
     local collider = world:newRectangleCollider(dimensions.x, dimensions. y, dimensions.w * img:getPixelWidth(), dimensions.h * img:getPixelHeight())
     collider:setType("dynamic")
     collider:applyForce(0,200000)
-    
 
-    return {
+    local result = {
         id = id,
         type = type,
         functions = functions,
@@ -47,5 +47,10 @@ function createMeteorite(id,world)
         collider = collider,
         exists = exists,
     }
+
+    collider:setUserData(result)
+    
+
+    return result
        
 end

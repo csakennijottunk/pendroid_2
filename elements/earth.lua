@@ -21,8 +21,7 @@ function createEarth(id,world)
     dimensions.x = (main.dimensions.w - img:getPixelWidth()*dimensions.w)/2
     local collider = world:newCircleCollider(dimensions.x + dimensions.w * img:getPixelWidth()/2, dimensions.y + dimensions.w * img:getPixelWidth()/2, dimensions.w * img:getPixelWidth()/2)
     collider:setType("static")
-
-    return {
+    local result = {
         id = id,
         type = type,
         functions = functions,
@@ -30,5 +29,8 @@ function createEarth(id,world)
         dimensions = dimensions,
         collider = collider,
     }
+    collider:setUserData(result)
+
+    return result
        
 end
