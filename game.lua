@@ -41,7 +41,6 @@ gameTable = {
                     SHOOT_BUTTON = "SHOOT_BUTTON"
                 },                
             }
-
             
             --#endregion
             --#region Föld
@@ -58,8 +57,6 @@ gameTable = {
             table.insert(gameTable.elements,createAmmoIndicator(#gameTable.elements))  
 
             table.insert(gameTable.elements,createShootButton(#gameTable.elements))
-
-
             end
             
         end,
@@ -81,15 +78,15 @@ function gameTable.functions.update(dt)
         local rot = -(math.rad(26) + Analog.getAngle(Analog.dx,Analog.dy,Analog.getX()*100,Analog.getY()*100))  
         v.functions.update(v,dt,rot)
     end
-    print(gameTable.score)
+    gameTable.score = gameTable.score + 1
 end
-
 function gameTable.functions.draw()
     
     for i, v in pairs(gameTable.elements) do
         v.functions.draw(v)
     end
     Analog.draw()
+    love.graphics.print("A találatok száma: " .. gameTable.score)
 end
 
 

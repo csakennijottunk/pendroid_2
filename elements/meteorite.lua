@@ -36,7 +36,6 @@ function createMeteorite(id,world)
     local collider = world:newRectangleCollider(dimensions.x, dimensions. y, dimensions.w * img:getPixelWidth(), dimensions.h * img:getPixelHeight())
     collider:setType("dynamic")
     collider:applyForce(0,200000)
-    
 
     return {
         id = id,
