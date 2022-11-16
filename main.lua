@@ -21,6 +21,7 @@ main = {
         badlogic = love.graphics.newImage("assets/badlogic.jpg"),
         earth = love.graphics.newImage("assets/earth.png"),
         kantsal = love.graphics.newImage("assets/kantsal.png"),
+        meteor = love.graphics.newImage("assets/Meteor.png"),
     },
     fonts = {
         main_font = ""

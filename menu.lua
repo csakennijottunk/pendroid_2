@@ -20,14 +20,14 @@ menuTable = {
             click = function ()
                 main.setScreen(main.screens.credits)
             end,
-            plus = 100,
+            plus = 75,
         },
         {
             name = "Exit",
             click = function ()
                 love.event.quit()
             end,
-            plus = 200; 
+            plus = 150; 
         },
     }
 }
