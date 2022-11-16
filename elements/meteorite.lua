@@ -23,7 +23,7 @@ function createMeteorite(id,world)
             
         end
     }
-    local img = img or main.images.kantsal
+    local img = img or main.images.meteor
     local dimensions = dimensions or {
         x = 0,
         y = math.random(-200,-600),
