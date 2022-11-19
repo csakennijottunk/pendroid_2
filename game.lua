@@ -110,6 +110,7 @@ end
 
 
 function gameTable.functions.touchreleased(id, x, y, dx, dy, pressure)
+    --#todo Amikor felengedjük az analogot akkor mentsük el a rotationjet es amikor legközelebb újat hozunk létre(touchpressed) akkor alapbol a rotationt arra állítsuk be, az egyszerűbb irányítás érdekében.
     Analog.touchReleased(id, x, y, dx, dy, pressure)
 end
 
