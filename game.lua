@@ -96,7 +96,7 @@ end
 function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
     local shootButton = getElementByType(Element.type.SHOOT_BUTTON)
     if (not Analog.isHeld()) then
-        Analog = newAnalog(x,y,70,21)   
+        Analog.cx,Analog.cy = x,y
     elseif (isInBox(x,y,shootButton.dimensions.x,shootButton.dimensions.y,shootButton.dimensions.w * shootButton.img:getPixelWidth(),shootButton.dimensions.h* shootButton.img:getPixelHeight())) then
         table.insert(gameTable.elements,createAmmo(#gameTable.elements,gameTable.world,Analog))
     end
