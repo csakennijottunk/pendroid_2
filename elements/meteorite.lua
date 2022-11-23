@@ -19,9 +19,20 @@ function createMeteorite(id,world)
                     self.collider:destroy()
                     gameTable.removeElement(self)
                 end
-            end
 
-            
+                if (self.hp <= 0) then
+                    self.hp = 0
+                    self.exists = false
+                    self.collider:destroy()
+                    gameTable.removeElement(self)
+                end
+            end
+        end,
+        setHp = function(self,hp)
+            self.hp = hp
+        end,
+        getHp = function (self)
+            return self.hp
         end
     }
     local img = img or main.images.meteor
@@ -38,6 +49,8 @@ function createMeteorite(id,world)
     collider:setType("dynamic")
     collider:applyForce(0,200000)
 
+    local hp = 100
+
     local result = {
         id = id,
         type = type,
@@ -46,6 +59,7 @@ function createMeteorite(id,world)
         dimensions = dimensions,
         collider = collider,
         exists = exists,
+        hp = hp,
     }
 
     collider:setUserData(result)

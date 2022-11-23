@@ -85,7 +85,6 @@ function gameTable.functions.update(dt)
     gameTable.score = gameTable.score + 1
 end
 function gameTable.functions.draw()
-    
     for i, v in pairs(gameTable.elements) do
         v.functions.draw(v)
     end
@@ -97,11 +96,7 @@ end
 function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
     local shootButton = getElementByType(Element.type.SHOOT_BUTTON)
     if (not Analog.isHeld()) then
-        --Analog = newAnalog(x,y,70,21)
-        if not (y > getElementByType(Element.type.SHOOT_BUTTON).dimensions.y and x > getElementByType(Element.type.SHOOT_BUTTON).dimensions.x and x < getElementByType(Element.type.SHOOT_BUTTON).dimensions.x + getElementByType(Element.type.SHOOT_BUTTON).img:getPixelWidth() * getElementByType(Element.type.SHOOT_BUTTON).dimensions.w + 20) then
-            Analog.cx,Analog.cy = x,y   
-
-        end
+        Analog = newAnalog(x,y,70,21)   
     elseif (isInBox(x,y,shootButton.dimensions.x,shootButton.dimensions.y,shootButton.dimensions.w * shootButton.img:getPixelWidth(),shootButton.dimensions.h* shootButton.img:getPixelHeight())) then
         table.insert(gameTable.elements,createAmmo(#gameTable.elements,gameTable.world,Analog))
     end
@@ -110,7 +105,6 @@ end
 
 
 function gameTable.functions.touchreleased(id, x, y, dx, dy, pressure)
-    --#todo Amikor felengedjük az analogot akkor mentsük el a rotationjet es amikor legközelebb újat hozunk létre(touchpressed) akkor alapbol a rotationt arra állítsuk be, az egyszerűbb irányítás érdekében.
     Analog.touchReleased(id, x, y, dx, dy, pressure)
 end
 
@@ -196,9 +190,11 @@ end
 function gameTable.functions.beginContact(a,b,coll)
     local o1 = a:getUserData()
     local o2 = b:getUserData()
-    if (o1.type == Element.type.METEORITE and o2.type == Element.type.EARTH) then
-        a:getBody():destroy()
-        gameTable.removeElement(o1)
+    if (o1.type == Element.type.METEORITE and o2.type == Element.type.AMMO or o1.type == Element.type.AMMO and o2.type == Element.type.METEORITE) then
+        --a:getBody():destroy()
+        --gameTable.removeElement(o1)
+        o1.functions.setHp(o1,o1.functions.getHp(o1) - 10)
+        print(o1.id .. "IDJU OBJEKTUM HPJA CSOKKENTVE ERRE: " .. o1.hp)
     end 
 end
 
