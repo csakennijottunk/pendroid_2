@@ -14,7 +14,7 @@ function createMeteorite(id,world)
                 self.dimensions.x,self.dimensions.y = self.collider:getX(),self.collider:getY()
                 self.dimensions.rot = self.collider:getAngle()
                 
-                if (self.dimensions.y > main.dimensions.h + 50) then
+                if (self.dimensions.x + self.dimensions.w * self.img:getPixelWidth() < 0 or self.dimensions.x > main.dimensions.w or self.dimensions.y > main.dimensions.h + 100) then
                     self.exists = false
                     self.collider:destroy()
                     gameTable.removeElement(self)

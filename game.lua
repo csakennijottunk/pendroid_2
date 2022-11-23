@@ -12,6 +12,7 @@ gameTable = {
                 self.elements = {}
                 self.world = wf.newWorld(0,0,true)
                 self.world:setCallbacks(self.functions.beginContact, self.functions.endContact)
+                self.planet_earth = 100
             --#region Element requires
             require("elements.star")
             require("elements.earth")
@@ -84,6 +85,7 @@ function gameTable.functions.update(dt)
     end
 end
 function gameTable.functions.draw()
+    gameTable.world:draw()
     for i, v in pairs(gameTable.elements) do
         v.functions.draw(v)
     end
