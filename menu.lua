@@ -11,7 +11,7 @@ menuTable = {
         {
             name = "Play",
             click = function ()
-                main.setScreen(main.screens.game)
+                main.setScreen(main.screens.mapselector)
             end,
             plus = 0,
         },

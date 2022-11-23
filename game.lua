@@ -82,7 +82,6 @@ function gameTable.functions.update(dt)
         local rot = -(math.rad(26) + Analog.getAngle(Analog.dx,Analog.dy,Analog.getX()*100,Analog.getY()*100))  
         v.functions.update(v,dt,rot)
     end
-    gameTable.score = gameTable.score + 1
 end
 function gameTable.functions.draw()
     for i, v in pairs(gameTable.elements) do
@@ -91,7 +90,6 @@ function gameTable.functions.draw()
     Analog.draw()
     love.graphics.print("A találatok száma: " .. gameTable.score)
 end
-
 
 function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
     local shootButton = getElementByType(Element.type.SHOOT_BUTTON)
@@ -195,6 +193,7 @@ function gameTable.functions.beginContact(a,b,coll)
         --gameTable.removeElement(o1)
         o1.functions.setHp(o1,o1.functions.getHp(o1) - 10)
         print(o1.id .. "IDJU OBJEKTUM HPJA CSOKKENTVE ERRE: " .. o1.hp)
+        gameTable.score = gameTable.score + 1
     end 
 end
 
