@@ -2,8 +2,8 @@
 
 gameTable = {
     timer = {
-        dValue = 0.2,
-        value = 0.2,
+        dValue = 1,
+        value = 1,
     },
     score = 0,
     functions = {
@@ -96,6 +96,7 @@ end
 function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
     local shootButton = getElementByType(Element.type.SHOOT_BUTTON)
     if (not Analog.isHeld()) then
+        --#TODO CSAK AKKOR CSERELJUK KI AZ ANALOG POZICIOJAT HA NEM A SHOOTBUTTON_RE NYOM!!!!
         Analog.cx,Analog.cy = x,y
     elseif (isInBox(x,y,shootButton.dimensions.x,shootButton.dimensions.y,shootButton.dimensions.w * shootButton.img:getPixelWidth(),shootButton.dimensions.h* shootButton.img:getPixelHeight())) then
         table.insert(gameTable.elements,createAmmo(#gameTable.elements,gameTable.world,Analog))
@@ -190,13 +191,20 @@ end
 function gameTable.functions.beginContact(a,b,coll)
     local o1 = a:getUserData()
     local o2 = b:getUserData()
-    if (o1.type == Element.type.METEORITE and o2.type == Element.type.AMMO or o1.type == Element.type.AMMO and o2.type == Element.type.METEORITE) then
+    if (o1.type == Element.type.METEORITE and o2.type == Element.type.AMMO) then
         --a:getBody():destroy()
         --gameTable.removeElement(o1)
-        o1.functions.setHp(o1,o1.functions.getHp(o1) - 10)
-        print(o1.id .. "IDJU OBJEKTUM HPJA CSOKKENTVE ERRE: " .. o1.hp)
-        gameTable.score = gameTable.score + 1
-    end 
+        o2.collider:destroy()
+        gameTable.removeElement(o2)
+        o1.functions.setHp(o1,o1.functions.getHp(o1) - 1)
+        --gameTable.score = gameTable.score + 1
+
+    elseif (o1.type == Element.type.AMMO and o2.type == Element.type.METEORITE) then
+        o2.functions.setHp(o2,o2.functions.getHp(o2) - 1)
+        o1.collider:destroy()
+        gameTable.removeElement(o1)
+        --gameTable.score = gameTable.score + 1
+    end
 end
 
 function gameTable.functions.endContact(a,b,coll)

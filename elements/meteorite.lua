@@ -25,6 +25,7 @@ function createMeteorite(id,world)
                     self.exists = false
                     self.collider:destroy()
                     gameTable.removeElement(self)
+                    gameTable.score = gameTable.score + 1
                 end
             end
         end,
@@ -49,7 +50,7 @@ function createMeteorite(id,world)
     collider:setType("dynamic")
     collider:applyForce(0,200000)
 
-    local hp = 100
+    local hp = 1
 
     local result = {
         id = id,
