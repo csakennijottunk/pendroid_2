@@ -26,6 +26,12 @@ main = {
         earth = love.graphics.newImage("assets/earth.png"),
         kantsal = love.graphics.newImage("assets/kantsal.png"),
         meteor = love.graphics.newImage("assets/Meteor.png"),
+        buttons = {
+            start = {
+                active = love.graphics.newImage("assets/StartButton.png"),
+                pressed = love.graphics.newImage("assets/startbuttonpressed.png"),
+            }
+        }
     },
     fonts = {
         main_font = ""
