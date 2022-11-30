@@ -2,6 +2,7 @@ require("menu")
 require("game")
 require("credits")
 require("mapselector")
+require("gameend")
 main = {
     dimensions = {},
     setScreen = nil,
@@ -19,6 +20,9 @@ main = {
         },
         credits = {
             table = creditsTable
+        },
+        gamend = {
+            table = gameendTable
         }
     },
     images = {

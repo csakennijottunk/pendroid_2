@@ -3,13 +3,14 @@ mapselectorTable = {
         setup = function (self)
             suit = require("Framework.suit")
             if (self) then
+                self.map = 0
+                self.dif = 0
                 self.buttons = {
                     {
                         name = "Map1",
                         click = function ()
-                            main.setScreen(main.screens.game)
+                            self.map = 1
                         end,
-                        map = 1,
                         width = main.dimensions.w / 4.5,
                         height = main.dimensions.h / 1.5,
                         x = 50,
@@ -18,20 +19,19 @@ mapselectorTable = {
                     {
                         name = "Map2",
                         click = function ()
-                            main.setScreen(main.screens.game)
+                            self.map = 2
                         end,
-                        map = 2,
                         width = main.dimensions.w / 4.5,
                         height = main.dimensions.h / 1.5,
                         x = main.dimensions.w / 2 - main.dimensions.w / 4.5 / 2,
                         y = 30
+                        
                     },
                     {
                         name = "Map3",
                         click = function ()
-                            main.setScreen(main.screens.game)
+                            self.map = 3
                         end,
-                        map = 3,
                         width = main.dimensions.w / 4.5,
                         height = main.dimensions.h / 1.5,
                         x = main.dimensions.w - (main.dimensions.w / 4.5 + 50),
@@ -40,9 +40,8 @@ mapselectorTable = {
                     {
                         name = "Dif1",
                         click = function ()
-                            main.setScreen(main.screens.game)
+                            self.dif = 1
                         end,
-                        dif = 1,
                         width = 100,
                         height = 30,
                         x = 120,
@@ -51,9 +50,8 @@ mapselectorTable = {
                     {
                         name = "Dif2",
                         click = function ()
-                            main.setScreen(main.screens.game)
+                            self.dif = 2
                         end,
-                        dif = 2,
                         width = 100,
                         height = 30,
                         x = main.dimensions.w / 2 - 50,
@@ -62,9 +60,8 @@ mapselectorTable = {
                     {
                         name = "Dif3",
                         click = function ()
-                            main.setScreen(main.screens.game)
+                            self.dif = 3
                         end,
-                        dif = 3,
                         width = 100,
                         height = 30,
                         x = main.dimensions.w - (main.dimensions.w / 4.5 + 50),
@@ -75,8 +72,8 @@ mapselectorTable = {
                         name = "Next",
                         click = function ()
                             main.setScreen(main.screens.game)
+                            main.screens.game.table.functions.setup(main.screens.game.table, dif, map)
                         end,
-                        dif = 3,
                         width = 100,
                         height = 30,
                         x = main.dimensions.w  / 2 - 50,

@@ -3,12 +3,13 @@
 gameTable = {
     timer = {
         dValue = 1,
-        value = 1,
+        value = 5,
     },
     score = 0,
     functions = {
-        setup = function (self)
+        setup = function (self, dif, map)
             if (self) then
+                print(mapselectorTable.dif .. '\t' .. mapselectorTable.map)
                 self.elements = {}
                 self.world = wf.newWorld(0,0,true)
                 self.world:setCallbacks(self.functions.beginContact, self.functions.endContact)
@@ -78,6 +79,7 @@ function gameTable.functions.update(dt)
     if (gameTable.timer.value < 0) then
         table.insert(gameTable.elements,createMeteorite(#gameTable.elements,gameTable.world))
         gameTable.timer.value = gameTable.timer.dValue
+        main.setScreen(main.screens.gamend)
     end
     for i,v in pairs(gameTable.elements) do
         local rot = -(math.rad(26) + Analog.getAngle(Analog.dx,Analog.dy,Analog.getX()*100,Analog.getY()*100))  
