@@ -1,4 +1,4 @@
-function createMeteorite(id,world)
+function createMeteorite(id,world, diff)
     local exists = true
     local id = id or Element.id
     local type = Element.type.METEORITE
@@ -50,7 +50,7 @@ function createMeteorite(id,world)
     collider:setType("dynamic")
     collider:applyForce(0,200000)
 
-    local hp = 1
+    local hp = 1 * diff
 
     local result = {
         id = id,

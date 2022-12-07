@@ -2,18 +2,26 @@
 
 gameTable = {
     timer = {
-        dValue = 1,
+        dValue = 2,
+        value = 5,
+    },
+    gameTimer = {
         value = 5,
     },
     score = 0,
     functions = {
-        setup = function (self, dif, map)
+        setup = function (self)
             if (self) then
-                print(mapselectorTable.dif .. '\t' .. mapselectorTable.map)
+                --print(mapselectorTable.dif .. '\t' .. mapselectorTable.map)
+                self.difficulty = mapselectorTable.dif
+                self.map = mapselectorTable.map
+                self.timer.dValue = self.timer.dValue / self.difficulty
                 self.elements = {}
                 self.world = wf.newWorld(0,0,true)
                 self.world:setCallbacks(self.functions.beginContact, self.functions.endContact)
-                self.planet_earth = 100
+                self.planet_hp = 6 - self.difficulty
+                self.gameTimer.value = self.gameTimer.value * self.difficulty
+                self.gamestate = nil
             --#region Element requires
             require("elements.star")
             require("elements.earth")
@@ -76,9 +84,18 @@ function gameTable.functions.update(dt)
     gameTable.world:update(dt)
     Analog.update(dt)
     gameTable.timer.value = gameTable.timer.value - dt
+    gameTable.gameTimer.value = gameTable.gameTimer.value - dt
     if (gameTable.timer.value < 0) then
-        table.insert(gameTable.elements,createMeteorite(#gameTable.elements,gameTable.world))
+        table.insert(gameTable.elements,createMeteorite(#gameTable.elements,gameTable.world,gameTable.difficulty))
         gameTable.timer.value = gameTable.timer.dValue
+        --main.setScreen(main.screens.gamend)
+    end
+    if (gameTable.gameTimer.value <= 0 or gameTable.planet_hp <= 0) then
+        if (gameTable.planet_hp <= 0) then
+            gameTable.gamestate = false            
+        else
+            gameTable.gamestate = true
+        end
         main.setScreen(main.screens.gamend)
     end
     for i,v in pairs(gameTable.elements) do
@@ -92,7 +109,6 @@ function gameTable.functions.draw()
         v.functions.draw(v)
     end
     Analog.draw()
-    love.graphics.print("A találatok száma: " .. gameTable.score)
 end
 
 function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
@@ -206,6 +222,12 @@ function gameTable.functions.beginContact(a,b,coll)
         o1.collider:destroy()
         gameTable.removeElement(o1)
         --gameTable.score = gameTable.score + 1
+    elseif (o1.type == Element.type.METEORITE and o2.type == Element.type.EARTH) then
+        o1.functions.setHp(o1,o1.functions.getHp(o1)-1)
+        gameTable.planet_hp = gameTable.planet_hp-1
+    elseif (o1.type == Element.type.EARTH and o2.type == Element.type.METEORITE)  then
+        o2.functions.setHp(o2,o2.functions.getHp(o2)-1)
+        gameTable.planet_hp = gameTable.planet_hp - 1
     end
 end
 
