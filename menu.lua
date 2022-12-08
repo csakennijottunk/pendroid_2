@@ -2,6 +2,7 @@ menuTable = {
     functions = {
         setup = function ()
             suit = require("Framework.suit")
+            background = love.graphics.newImage("assets/map.png")
         end,
         update = nil,
         draw = nil,
@@ -44,5 +45,6 @@ function menuTable.functions.update(dt)
 end
 
 function menuTable.functions.draw()
+    love.graphics.draw(background, 0, 0, 0,  0.7, 0.7)
     suit.draw()
 end

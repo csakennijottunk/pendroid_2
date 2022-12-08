@@ -71,8 +71,10 @@ mapselectorTable = {
                     {
                         name = "Next",
                         click = function ()
-                            main.setScreen(main.screens.game)
-                            main.screens.game.table.functions.setup(main.screens.game.table, dif, map)
+                            if self.dif ~= 0 and self.map ~= 0 then
+                                main.setScreen(main.screens.game)
+                                main.screens.game.table.functions.setup(main.screens.game.table, dif, map)
+                            end
                         end,
                         width = 100,
                         height = 30,

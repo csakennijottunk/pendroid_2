@@ -59,6 +59,7 @@ function creditsTable.functions.update(dt)
 end
 
 function creditsTable.functions.draw()
+    love.graphics.draw(background, 0, 0,  0,  0.7, 0.7)
     for i,v in pairs(text)do
         love.graphics.draw(v.text, v.x, v.y)
     end

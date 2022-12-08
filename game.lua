@@ -1,5 +1,4 @@
-
-
+gamefont = love.graphics.newFont("assets/heavy_heap_rg.otf", 30)
 gameTable = {
     timer = {
         dValue = 2,
@@ -12,6 +11,14 @@ gameTable = {
     functions = {
         setup = function (self)
             if (self) then
+                text = {
+                    scorelabel = {
+                        text = love.graphics.newText(gamefont, self.score),
+                        x = 0,
+                        y = 0,
+                    }
+                }
+
                 --print(mapselectorTable.dif .. '\t' .. mapselectorTable.map)
                 self.difficulty = mapselectorTable.dif
                 self.map = mapselectorTable.map
@@ -88,7 +95,7 @@ function gameTable.functions.update(dt)
     if (gameTable.timer.value < 0) then
         table.insert(gameTable.elements,createMeteorite(#gameTable.elements,gameTable.world,gameTable.difficulty))
         gameTable.timer.value = gameTable.timer.dValue
-        --main.setScreen(main.screens.gamend)
+
     end
     if (gameTable.gameTimer.value <= 0 or gameTable.planet_hp <= 0) then
         if (gameTable.planet_hp <= 0) then
@@ -104,6 +111,9 @@ function gameTable.functions.update(dt)
     end
 end
 function gameTable.functions.draw()
+    for i,v in pairs(text)do
+        love.graphics.draw(v.text, v.x, v.y)
+    end
     gameTable.world:draw()
     for i, v in pairs(gameTable.elements) do
         v.functions.draw(v)
