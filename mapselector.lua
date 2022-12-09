@@ -11,20 +11,20 @@ mapselectorTable = {
                         click = function ()
                             self.map = 1
                         end,
-                        width = main.dimensions.w / 4.5,
-                        height = main.dimensions.h / 1.5,
-                        x = 50,
-                        y = 30
+                        width = 125,
+                        height = 100,
+                        x = 75,
+                        y = 110
                     },
                     {
                         name = "Map2",
                         click = function ()
                             self.map = 2
                         end,
-                        width = main.dimensions.w / 4.5,
-                        height = main.dimensions.h / 1.5,
-                        x = main.dimensions.w / 2 - main.dimensions.w / 4.5 / 2,
-                        y = 30
+                        width = 125,
+                        height = 100,
+                        x = main.dimensions.w / 2 - 62,5,
+                        y = 110
                         
                     },
                     {
@@ -32,40 +32,40 @@ mapselectorTable = {
                         click = function ()
                             self.map = 3
                         end,
-                        width = main.dimensions.w / 4.5,
-                        height = main.dimensions.h / 1.5,
+                        width = 125,
+                        height = 100,
                         x = main.dimensions.w - (main.dimensions.w / 4.5 + 50),
-                        y = 30
+                        y = 110
                     },
                     {
                         name = "Dif1",
                         click = function ()
                             self.dif = 1
                         end,
-                        width = 100,
-                        height = 30,
-                        x = 120,
-                        y = main.dimensions.h - 150
+                        width = 125,
+                        height = 100,
+                        x = 75,
+                        y = main.dimensions.h - 300
                     },
                     {
                         name = "Dif2",
                         click = function ()
                             self.dif = 2
                         end,
-                        width = 100,
-                        height = 30,
-                        x = main.dimensions.w / 2 - 50,
-                        y = main.dimensions.h - 150
+                        width = 125,
+                        height = 100,
+                        x = main.dimensions.w / 2 - 62,5,
+                        y = main.dimensions.h - 300
                     },
                     {
                         name = "Dif3",
                         click = function ()
                             self.dif = 3
                         end,
-                        width = 100,
-                        height = 30,
+                        width = 125,
+                        height = 100,
                         x = main.dimensions.w - (main.dimensions.w / 4.5 + 50),
-                        y = main.dimensions.h - 150
+                        y = main.dimensions.h - 300
 
                     },
                     {

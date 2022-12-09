@@ -86,7 +86,6 @@ gameTable = {
 
             table.insert(gameTable.elements,createShootButton(#gameTable.elements))
             end
-            
         end,
         update = nil,
         draw = nil,
