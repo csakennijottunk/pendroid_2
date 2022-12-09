@@ -11,10 +11,15 @@ gameTable = {
     functions = {
         setup = function (self)
             if (self) then
-                text = {
+                self.text = {
                     scorelabel = {
-                        text = love.graphics.newText(gamefont, self.score),
+                        text = love.graphics.newText(gamefont, "Your score: " .. self.score),
                         x = 0,
+                        y = 0,
+                    },
+                    time = {
+                        text = love.graphics.newText(gamefont, "Remaining time: " .. self.gameTimer.value .. "sec"),
+                        x = main.dimensions.w - 250,
                         y = 0,
                     }
                 }
@@ -91,7 +96,9 @@ function gameTable.functions.update(dt)
     gameTable.world:update(dt)
     Analog.update(dt)
     gameTable.timer.value = gameTable.timer.value - dt
+    gameTable.text.time.text:set("Remaining time: " .. math.ceil(gameTable.gameTimer.value) .. "sec")
     gameTable.gameTimer.value = gameTable.gameTimer.value - dt
+    print(gameTable.gameTimer.value)
     if (gameTable.timer.value < 0) then
         table.insert(gameTable.elements,createMeteorite(#gameTable.elements,gameTable.world,gameTable.difficulty))
         gameTable.timer.value = gameTable.timer.dValue
@@ -99,7 +106,7 @@ function gameTable.functions.update(dt)
     end
     if (gameTable.gameTimer.value <= 0 or gameTable.planet_hp <= 0) then
         if (gameTable.planet_hp <= 0) then
-            gameTable.gamestate = false            
+            gameTable.gamestate = false         
         else
             gameTable.gamestate = true
         end
@@ -111,7 +118,7 @@ function gameTable.functions.update(dt)
     end
 end
 function gameTable.functions.draw()
-    for i,v in pairs(text)do
+    for i,v in pairs(gameTable.text)do
         love.graphics.draw(v.text, v.x, v.y)
     end
     gameTable.world:draw()
