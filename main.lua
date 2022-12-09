@@ -33,6 +33,7 @@ main = {
     images = {
         badlogic = love.graphics.newImage("assets/badlogic.jpg"),
         star = love.graphics.newImage("assets/Star.png"),
+        weapon = love.graphics.newImage("assets/weapon.png"),
         earth = love.graphics.newImage("assets/earth.png"),
         mars = love.graphics.newImage("assets/Mars.png"),
         saturn = love.graphics.newImage("assets/Saturn.png"),
