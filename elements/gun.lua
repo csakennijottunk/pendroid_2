@@ -9,15 +9,15 @@ function createGun(id)
         update = function (self,dt)
         end
     }
-    local img = img or main.images.badlogic
+    local img = img or main.images.weapon
     local dimensions = dimensions or {
-        x = 0 ,
+        x = 0,
         y = main.dimensions.h*0.8,
-        rot = 0,
-        w = 0.1*main.dimensions.drawScaleX,
-        h = 0.1*main.dimensions.drawScaleX,
+        rot = math.rad(-90),
+        w = 0.6*main.dimensions.drawScaleX,
+        h = 0.6*main.dimensions.drawScaleX,
     }
-    dimensions.x = main.dimensions.w/2 - ((dimensions.w * img:getPixelWidth())/2)
+    dimensions.x = main.dimensions.w/2 - 12.5
 
     return {
         id = id,
