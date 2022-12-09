@@ -2,10 +2,10 @@ gamefont = love.graphics.newFont("assets/heavy_heap_rg.otf", 30)
 gameTable = {
     timer = {
         dValue = 2,
-        value = 5,
+        value = 2,
     },
     gameTimer = {
-        value = 5,
+        value = 15,
     },
     score = 0,
     functions = {
@@ -32,6 +32,15 @@ gameTable = {
                 --print(mapselectorTable.dif .. '\t' .. mapselectorTable.map)
                 self.difficulty = mapselectorTable.dif
                 self.map = mapselectorTable.map
+                if (self.map == 1) then
+                    self.map_path = main.images.earth
+                elseif (self.map == 2) then
+                    self.map_path = main.images.mars
+                elseif (self.map == 3) then
+                    self.map_path = main.images.saturn
+                end
+                self.gameTimer.value = 15
+                self.timer.dValue = 2
                 self.timer.dValue = self.timer.dValue / self.difficulty
                 self.elements = {}
                 self.world = wf.newWorld(0,0,true)
@@ -76,7 +85,7 @@ gameTable = {
                 --table.insert(gameTable.elements, gameTable.createElement(1, Element.type.STAR))                
                 table.insert(gameTable.elements, createStar(#gameTable.elements)) 
             end
-            table.insert(gameTable.elements, createEarth(#gameTable.elements,self.world))                
+            table.insert(gameTable.elements, createEarth(#gameTable.elements,self.world,self.map_path))                
             --#endregion
             --#region gun
             table.insert(gameTable.elements,createGun(#gameTable.elements))
@@ -101,8 +110,9 @@ function gameTable.functions.update(dt)
     gameTable.world:update(dt)
     Analog.update(dt)
     gameTable.timer.value = gameTable.timer.value - dt
-    gameTable.text.planethp.text:set(gameTable.planet_hp)
+    gameTable.text.planethp.text:set("Remaining health: " .. gameTable.planet_hp)
     gameTable.text.time.text:set("Remaining time: " .. math.ceil(gameTable.gameTimer.value) .. "sec")
+    gameTable.text.scorelabel.text:set("Your score: " .. gameTable.score)
     gameTable.gameTimer.value = gameTable.gameTimer.value - dt
     print(gameTable.gameTimer.value)
     if (gameTable.timer.value < 0) then
@@ -111,6 +121,12 @@ function gameTable.functions.update(dt)
 
     end
     if (gameTable.gameTimer.value <= 0 or gameTable.planet_hp <= 0) then
+        for i, v in pairs(gameTable.elements) do
+            if (v.collider) then
+                v.collider:destroy()
+            end
+            gameTable.removeElement(v)
+        end
         if (gameTable.planet_hp <= 0) then
             gameTable.gamestate = false         
         else
@@ -127,7 +143,6 @@ function gameTable.functions.draw()
     for i,v in pairs(gameTable.text)do
         love.graphics.draw(v.text, v.x, v.y)
     end
-    gameTable.world:draw()
     for i, v in pairs(gameTable.elements) do
         v.functions.draw(v)
     end
@@ -138,7 +153,9 @@ function gameTable.functions.touchpressed(id, x, y, dx, dy, pressure)
     local shootButton = getElementByType(Element.type.SHOOT_BUTTON)
     if (not Analog.isHeld()) then
         --#TODO CSAK AKKOR CSERELJUK KI AZ ANALOG POZICIOJAT HA NEM A SHOOTBUTTON_RE NYOM!!!!
-        Analog.cx,Analog.cy = x,y
+        if (not isInBox(x,y,shootButton.dimensions.x,shootButton.dimensions.y,shootButton.dimensions.w * shootButton.img:getPixelWidth(),shootButton.dimensions.h* shootButton.img:getPixelHeight())) then
+            Analog.cx,Analog.cy = x,y    
+        end
     elseif (isInBox(x,y,shootButton.dimensions.x,shootButton.dimensions.y,shootButton.dimensions.w * shootButton.img:getPixelWidth(),shootButton.dimensions.h* shootButton.img:getPixelHeight())) then
         table.insert(gameTable.elements,createAmmo(#gameTable.elements,gameTable.world,Analog))
     end
