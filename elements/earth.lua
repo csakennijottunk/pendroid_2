@@ -1,4 +1,4 @@
-function createEarth(id,world)
+function createEarth(id,world,img)
     local id = id or Element.id
     local type = Element.type.EARTH
     local functions = functions or {
@@ -15,8 +15,8 @@ function createEarth(id,world)
         x = 0,
         y = main.dimensions.h*0.8,
         rot = 0,
-        w = 0.1*main.dimensions.drawScaleX,
-        h = 0.1*main.dimensions.drawScaleX,
+        w = 0.8*main.dimensions.drawScaleX,
+        h = 0.8*main.dimensions.drawScaleX,
     }
     dimensions.x = (main.dimensions.w - img:getPixelWidth()*dimensions.w)/2
     local collider = world:newCircleCollider(dimensions.x + dimensions.w * img:getPixelWidth()/2, dimensions.y + dimensions.w * img:getPixelWidth()/2, dimensions.w * img:getPixelWidth()/2.4)

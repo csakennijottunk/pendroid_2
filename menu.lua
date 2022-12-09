@@ -44,6 +44,6 @@ function menuTable.functions.update(dt)
 end
 
 function menuTable.functions.draw()
-    love.graphics.draw(background, 0, 0, 0,  0.7, 0.7)
+    love.graphics.draw(background, 0, 0, 0,  1,1)
     suit.draw()
 end

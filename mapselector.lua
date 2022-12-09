@@ -7,7 +7,7 @@ mapselectorTable = {
                 self.dif = 0
                 self.buttons = {
                     {
-                        name = "Map1",
+                        name = "PorSaturday",
                         click = function ()
                             self.map = 1
                         end,
@@ -17,7 +17,7 @@ mapselectorTable = {
                         y = 110
                     },
                     {
-                        name = "Map2",
+                        name = "Mars",
                         click = function ()
                             self.map = 2
                         end,
@@ -28,7 +28,7 @@ mapselectorTable = {
                         
                     },
                     {
-                        name = "Map3",
+                        name = "PeeLand",
                         click = function ()
                             self.map = 3
                         end,
@@ -38,7 +38,7 @@ mapselectorTable = {
                         y = 110
                     },
                     {
-                        name = "Dif1",
+                        name = "Easy",
                         click = function ()
                             self.dif = 1
                         end,
@@ -48,7 +48,7 @@ mapselectorTable = {
                         y = main.dimensions.h - 300
                     },
                     {
-                        name = "Dif2",
+                        name = "Hard",
                         click = function ()
                             self.dif = 2
                         end,
@@ -58,7 +58,7 @@ mapselectorTable = {
                         y = main.dimensions.h - 300
                     },
                     {
-                        name = "Dif3",
+                        name = "So-so hard",
                         click = function ()
                             self.dif = 3
                         end,

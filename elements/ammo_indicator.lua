@@ -12,7 +12,7 @@ function createAmmoIndicator(id)
             self.dimensions.rot = 90+rot
         end
     }
-    local img = img or main.images.badlogic
+    local img = img or main.images.ammo_indicator
     local dimensions = dimensions or {
         x = 0 ,
         y = 0,
@@ -21,7 +21,7 @@ function createAmmoIndicator(id)
         h = 0.5,
     }
     dimensions.h = getElementByType(Element.type.EARTH).dimensions.y / img:getPixelHeight()
-    dimensions.x = main.dimensions.w/2 - 65 + img:getPixelWidth()/4
+    dimensions.x = main.dimensions.w/2
     dimensions.y = img:getPixelHeight() * dimensions.h
 
     return {

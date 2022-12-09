@@ -12,12 +12,12 @@ function createShootButton(id)
             print("szar")
         end
     }
-    local img = img or main.images.badlogic
+    local img = img or main.images.shoot_button
     local dimensions = dimensions or {
         x = 50,
         y = 0,
         rot = 0,
-        w = 0.7 * main.dimensions.drawScaleX,
+        w = 0.4 * main.dimensions.drawScaleX,
         h = 0.4 * main.dimensions.drawScaleX,
     }
     dimensions.y = main.dimensions.h - (img:getPixelWidth() * dimensions.h) - 50
