@@ -15,9 +15,9 @@ gameendTable = {
                         y = main.dimensions.h / 1.5
                     },
                 }
-                text = {
+                self.text = {
                     nicetry = {
-                        text = love.graphics.newText(font, "It will be better next time."),
+                        text = love.graphics.newText(font, ""),
                         x = main.dimensions.w / 2 - 175,
                         y = main.dimensions.h / 2 - 150,
                     },
@@ -27,6 +27,11 @@ gameendTable = {
                         y = main.dimensions.h / 2.2,
                     },
                 }
+                if (gameTable.gamestate) then
+                    self.text.nicetry.text:set("VICTORY!")
+                else
+                    self.text.nicetry.text:set("LOSE!")
+                end
             end
         end,
         update = nil,
@@ -44,7 +49,7 @@ function gameendTable.functions:update(dt)
 end 
 
 function gameendTable.functions.draw()
-    for i,v in pairs(text)do
+    for i,v in pairs(gameendTable.text)do
         love.graphics.draw(v.text, v.x, v.y)
     end
     suit.draw()

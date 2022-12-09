@@ -3,7 +3,9 @@ require("game")
 require("credits")
 require("mapselector")
 require("gameend")
+require("tutorial")
 main = {
+    first_time = true,
     dimensions = {},
     setScreen = nil,
     currentScreen = nil,
@@ -23,10 +25,14 @@ main = {
         },
         gamend = {
             table = gameendTable
+        },
+        tutorial = {
+            table = tutorialTable,
         }
     },
     images = {
         badlogic = love.graphics.newImage("assets/badlogic.jpg"),
+        star = love.graphics.newImage("assets/Star.png"),
         earth = love.graphics.newImage("assets/earth.png"),
         mars = love.graphics.newImage("assets/Mars.png"),
         saturn = love.graphics.newImage("assets/Saturn.png"),

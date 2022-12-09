@@ -12,7 +12,11 @@ menuTable = {
         {
             name = "Play",
             click = function ()
-                main.setScreen(main.screens.mapselector)
+                if (not main.first_time) then
+                    main.setScreen(main.screens.mapselector)                    
+                else
+                    main.setScreen(main.screens.tutorial)
+                end
             end,
             plus = 0,
         },
