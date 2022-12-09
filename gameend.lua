@@ -18,7 +18,7 @@ gameendTable = {
                 self.text = {
                     nicetry = {
                         text = love.graphics.newText(font, ""),
-                        x = main.dimensions.w / 2 - 175,
+                        x = main.dimensions.w / 2 - 35,
                         y = main.dimensions.h / 2 - 150,
                     },
                     score = {
@@ -29,8 +29,10 @@ gameendTable = {
                 }
                 if (gameTable.gamestate) then
                     self.text.nicetry.text:set("VICTORY!")
+                    self.text.nicetry.x = main.dimensions.w / 2 - 60
                 else
                     self.text.nicetry.text:set("LOSE!")
+                    self.text.nicetry.x = main.dimensions.w / 2 - 35
                 end
             end
         end,

@@ -82,6 +82,17 @@ mapselectorTable = {
                         y = main.dimensions.h - 50
 
                     },
+                    {
+                        name = "Back",
+                        click = function ()
+                            main.setScreen(main.screens.menu)
+                        end,
+                        width = 100,
+                        height = 35,
+                        x = 0,
+                        y = 0
+
+                    },
                 }
             end
         end,
