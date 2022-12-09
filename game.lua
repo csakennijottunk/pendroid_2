@@ -21,6 +21,11 @@ gameTable = {
                         text = love.graphics.newText(gamefont, "Remaining time: " .. self.gameTimer.value .. "sec"),
                         x = main.dimensions.w - 250,
                         y = 0,
+                    },
+                    planethp = {
+                        text = love.graphics.newText(gamefont, gameTable.planet_hp),
+                        x = main.dimensions.w - 500,
+                        y = 0,
                     }
                 }
 
@@ -96,6 +101,7 @@ function gameTable.functions.update(dt)
     gameTable.world:update(dt)
     Analog.update(dt)
     gameTable.timer.value = gameTable.timer.value - dt
+    gameTable.text.planethp.text:set(gameTable.planet_hp)
     gameTable.text.time.text:set("Remaining time: " .. math.ceil(gameTable.gameTimer.value) .. "sec")
     gameTable.gameTimer.value = gameTable.gameTimer.value - dt
     print(gameTable.gameTimer.value)
